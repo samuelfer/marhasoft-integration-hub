@@ -1,10 +1,8 @@
 package br.com.marhasoft.integrationhub.core.result;
 
-public enum IntegrationStatus {
+public enum MessageType {
 
-    PENDING,
-
-    SUCCESS,
+    INFO,
 
     WARNING,
 

@@ -8,17 +8,21 @@ import org.springframework.stereotype.Component;
 import br.com.marhasoft.integrationhub.core.context.IntegrationContext;
 
 @Component
-public class IntegrationPipeline {
+public class IntegrationPipeline<T, R> {
 
-    private final List<PipelineStep> steps;
+    private final List<PipelineStep<T, R>> steps;
 
-    public IntegrationPipeline(List<PipelineStep> steps) {
+    public IntegrationPipeline(List<PipelineStep<T, R>> steps) {
         this.steps = steps;
     }
 
-    public void execute(IntegrationContext<?, ?> context) {
+    public IntegrationContext<T, R> execute(
+            IntegrationContext<T, R> context) {
+
         steps.stream()
-                .sorted(Comparator.comparingInt(PipelineStep::getOrder))
+                .sorted(Comparator.comparing(PipelineStep::phase))
                 .forEach(step -> step.execute(context));
+
+        return context;
     }
 }
