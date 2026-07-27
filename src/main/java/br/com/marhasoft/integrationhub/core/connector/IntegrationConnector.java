@@ -8,9 +8,9 @@ public interface IntegrationConnector<T, R> {
 
     ConnectorMetadata metadata();
 
-    ValidationResult validate(T request);
+    ValidationResult validate(IntegrationContext<T, R> context);
 
-    R map(T request);
+    R map(IntegrationContext<T, R> context);
 
     void send(IntegrationContext<T, R> context);
 

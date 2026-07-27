@@ -1,5 +1,7 @@
 package br.com.marhasoft.integrationhub.core.result;
 
+import br.com.marhasoft.integrationhub.core.validation.ValidationError;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -61,6 +63,14 @@ public class IntegrationResult {
     public boolean hasWarnings() {
         return messages.stream()
                 .anyMatch(message -> message.type() == MessageType.WARNING);
+    }
+
+    public void addError(IntegrationMessage message) {
+        messages.add(message);
+    }
+
+    public void addError(ValidationError error) {
+        addError(error.code(), error.message());
     }
 
 }
