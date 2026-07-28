@@ -16,6 +16,9 @@ public class MappingStep<T, R> extends AbstractPipelineStep<T, R> {
 
     @Override
     protected void doExecute(IntegrationContext<T, R> context) {
-        context.getConnector().map(context);
+
+        R mappedRequest = context.getConnector().map(context);
+
+        context.setMappedRequest(mappedRequest);
     }
 }

@@ -13,18 +13,34 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Getter
-@Setter
 public class IntegrationContext<T, R> {
 
-    private T request;
+    private final T request;
+
+    @Setter
     private R mappedRequest;
-    private IntegrationConnector<T, R> connector;
-    private ConnectorMetadata metadata;
-    private IntegrationConfiguration configuration;
+
+    private final IntegrationConnector<T, R> connector;
+
+    private final IntegrationConfiguration configuration;
 
     private final IntegrationResult result = new IntegrationResult();
 
     private final Map<String, Object> attributes = new HashMap<>();
+
+    public IntegrationContext(
+            T request,
+            IntegrationConnector<T, R> connector,
+            IntegrationConfiguration configuration) {
+
+        this.request = request;
+        this.connector = connector;
+        this.configuration = configuration;
+    }
+
+    public ConnectorMetadata getMetadata() {
+        return connector.getMetadata();
+    }
 
     public Organization getOrganization() {
         return configuration != null ? configuration.getOrganization() : null;
@@ -37,4 +53,5 @@ public class IntegrationContext<T, R> {
     public EnvironmentType getEnvironment() {
         return configuration != null ? configuration.getEnvironment() : null;
     }
+
 }

@@ -6,7 +6,7 @@ import br.com.marhasoft.integrationhub.core.validation.ValidationResult;
 
 public interface IntegrationConnector<T, R> {
 
-    ConnectorMetadata metadata();
+    ConnectorMetadata getMetadata();
 
     ValidationResult validate(IntegrationContext<T, R> context);
 
