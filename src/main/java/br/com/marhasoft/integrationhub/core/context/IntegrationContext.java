@@ -4,6 +4,7 @@ import br.com.marhasoft.integrationhub.core.configuration.EnvironmentType;
 import br.com.marhasoft.integrationhub.core.configuration.IntegrationConfiguration;
 import br.com.marhasoft.integrationhub.core.configuration.Organization;
 import br.com.marhasoft.integrationhub.core.connector.IntegrationConnector;
+import br.com.marhasoft.integrationhub.core.dependencies.registry.DependencyKey;
 import br.com.marhasoft.integrationhub.core.metadata.ConnectorMetadata;
 import br.com.marhasoft.integrationhub.core.result.IntegrationResult;
 import lombok.Getter;
@@ -54,4 +55,18 @@ public class IntegrationContext<T, R> {
         return configuration != null ? configuration.getEnvironment() : null;
     }
 
+    /**
+     * Retorna a chave utilizada para localizar os resolvedores de dependência
+     * aplicáveis à integração em execução.
+     *
+     * @return chave composta pelo módulo, operação e ação da integração.
+     */
+    public DependencyKey getDependencyKey() {
+
+        return new DependencyKey(
+                getMetadata().module(),
+                getMetadata().operation(),
+                getMetadata().action());
+
+    }
 }
