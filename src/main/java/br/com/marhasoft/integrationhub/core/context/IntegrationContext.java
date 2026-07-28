@@ -13,15 +13,17 @@ import lombok.Setter;
 import java.util.HashMap;
 import java.util.Map;
 
-@Getter
-public class IntegrationContext<T, R> {
+public class IntegrationContext<T, P, R> {
 
     private final T request;
 
     @Setter
-    private R mappedRequest;
+    private P mappedPayload;
 
-    private final IntegrationConnector<T, R> connector;
+    @Setter
+    private R response;
+
+    private final IntegrationConnector<T, P, R> connector;
 
     private final IntegrationConfiguration configuration;
 
@@ -31,7 +33,7 @@ public class IntegrationContext<T, R> {
 
     public IntegrationContext(
             T request,
-            IntegrationConnector<T, R> connector,
+            IntegrationConnector<T, P, R> connector,
             IntegrationConfiguration configuration) {
 
         this.request = request;
@@ -54,6 +56,19 @@ public class IntegrationContext<T, R> {
     public EnvironmentType getEnvironment() {
         return configuration != null ? configuration.getEnvironment() : null;
     }
+
+    public void putAttribute(String key, Object value) {
+        attributes.put(key, value);
+    }
+
+    public Object getAttribute(String key) {
+        return attributes.get(key);
+    }
+
+    public <V> V getAttribute(String key, Class<V> type) {
+        return type.cast(attributes.get(key));
+    }
+
 
     /**
      * Retorna a chave utilizada para localizar os resolvedores de dependência

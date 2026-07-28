@@ -7,15 +7,14 @@ import br.com.marhasoft.integrationhub.core.validation.ValidationResult;
 public class ValidationStep<T, R> extends AbstractPipelineStep<T, R> {
 
     @Override
-    public String name() {
-        return "Validation";
-    }
-
-    @Override
     public PipelinePhase phase() {
         return PipelinePhase.VALIDATION;
     }
 
+    /**
+     * Executa a validação da integração e adiciona ao resultado do contexto
+     * todos os erros encontrados, caso existam.
+     */
     @Override
     protected void doExecute(IntegrationContext<T, R> context) {
 
@@ -26,14 +25,10 @@ public class ValidationStep<T, R> extends AbstractPipelineStep<T, R> {
                     "O conector retornou um ValidationResult nulo.");
         }
 
-        if (validation.isValid()) {
-            return;
-        }
-
-        addValidationErrors(context, validation);
+        context.getResult().addErrors(validation.getErrors());
     }
 
-    private void addValidationErrors(
+    private void addErrorsToContext(
             IntegrationContext<T, R> context,
             ValidationResult validation) {
 

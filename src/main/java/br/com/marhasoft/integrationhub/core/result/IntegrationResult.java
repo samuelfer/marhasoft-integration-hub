@@ -34,6 +34,10 @@ public class IntegrationResult {
         this.exception = exception;
     }
 
+    public void addInfo(IntegrationMessage message) {
+        messages.add(message);
+    }
+
     public void addInfo(String code, String message) {
         messages.add(new IntegrationMessage(
                 MessageType.INFO,
@@ -48,11 +52,28 @@ public class IntegrationResult {
                 message));
     }
 
+    public void addWarning(IntegrationMessage message) {
+        messages.add(message);
+    }
+
+
     public void addError(String code, String message) {
         messages.add(new IntegrationMessage(
                 MessageType.ERROR,
                 code,
                 message));
+    }
+
+    public void addError(IntegrationMessage message) {
+        messages.add(message);
+    }
+
+    public void addError(ValidationError error) {
+        addError(error.code(), error.message());
+    }
+
+    public void addErrors(List<ValidationError> errors) {
+        errors.forEach(this::addError);
     }
 
     public boolean hasErrors() {
@@ -63,14 +84,6 @@ public class IntegrationResult {
     public boolean hasWarnings() {
         return messages.stream()
                 .anyMatch(message -> message.type() == MessageType.WARNING);
-    }
-
-    public void addError(IntegrationMessage message) {
-        messages.add(message);
-    }
-
-    public void addError(ValidationError error) {
-        addError(error.code(), error.message());
     }
 
 }
