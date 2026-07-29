@@ -40,11 +40,9 @@ public class ProprietarioDependencyResolver
     public void resolve(
             IntegrationContext<VeiculoRequest, Object, Object> context) {
 
-        PessoaResponse proprietario = pessoaClient.buscar(
-                        context.getRequest().getCpfCnpjProprietario())
-                .orElse(null);
-
-        context.putAttribute("proprietario", proprietario);
+        pessoaClient.buscar(context.getRequest().getCpfCnpjProprietario())
+                .ifPresent(proprietario ->
+                        context.putAttribute("proprietario", proprietario));
     }
 
     @Override

@@ -23,17 +23,22 @@ public class VeiculoConnector implements IntegrationConnector<
         VeiculoPayload,
         VeiculoResponse> {
 
+    private static final ConnectorMetadata METADATA =
+            new ConnectorMetadata(
+                    IntegrationModule.FROTAS,
+                    IntegrationOperation.VEICULO,
+                    IntegrationAction.CREATE);
+
     private final VeiculoMapper mapper;
     private final VeiculoValidator validator;
     private final TceFrotasClient client;
 
+    /**
+     * Retorna os metadados que identificam esta integração.
+     */
     @Override
     public ConnectorMetadata getMetadata() {
-        return new ConnectorMetadata(
-                IntegrationModule.FROTAS,
-                IntegrationOperation.VEICULO,
-                IntegrationAction.CREATE
-        );
+        return METADATA;
     }
 
     /**
@@ -46,7 +51,9 @@ public class VeiculoConnector implements IntegrationConnector<
                     VeiculoPayload,
                     VeiculoResponse> context) {
 
-        return validator.validate(context.getRequest(), context);
+        return validator.validate(
+                context.getRequest(),
+                context);
     }
 
     /**
@@ -77,6 +84,7 @@ public class VeiculoConnector implements IntegrationConnector<
                     VeiculoResponse> context) {
 
         context.setResponse(
-                client.cadastrarVeiculo(context.getMappedPayload()));
+                client.cadastrarVeiculo(
+                        context.getMappedPayload()));
     }
 }

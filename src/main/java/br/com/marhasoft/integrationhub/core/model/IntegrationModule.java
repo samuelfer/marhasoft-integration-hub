@@ -5,6 +5,7 @@ public enum IntegrationModule {
     FROTAS,
     PATRIMONIO,
     CONTABILIDADE,
-    LICITACOES
+    LICITACOES,
+    PESSOAS
 
 }

@@ -2,12 +2,7 @@ package br.com.marhasoft.integrationhub.core.pipeline;
 
 import br.com.marhasoft.integrationhub.core.context.IntegrationContext;
 
-public class MappingStep<T, R> extends AbstractPipelineStep<T, R> {
-
-    @Override
-    public String name() {
-        return "Mapping";
-    }
+public class MappingStep<T, P, R> extends AbstractPipelineStep<T, P, R> {
 
     @Override
     public PipelinePhase phase() {
@@ -15,10 +10,7 @@ public class MappingStep<T, R> extends AbstractPipelineStep<T, R> {
     }
 
     @Override
-    protected void doExecute(IntegrationContext<T, R> context) {
-
-        R mappedRequest = context.getConnector().map(context);
-
-        context.setMappedRequest(mappedRequest);
+    protected void doExecute(IntegrationContext<T, P, R> context) {
+        context.getConnector().map(context);
     }
 }

@@ -4,7 +4,7 @@ import br.com.marhasoft.integrationhub.core.context.IntegrationContext;
 import br.com.marhasoft.integrationhub.core.validation.ValidationError;
 import br.com.marhasoft.integrationhub.core.validation.ValidationResult;
 
-public class ValidationStep<T, R> extends AbstractPipelineStep<T, R> {
+public class ValidationStep<T, P, R> extends AbstractPipelineStep<T, P, R> {
 
     @Override
     public PipelinePhase phase() {
@@ -16,7 +16,7 @@ public class ValidationStep<T, R> extends AbstractPipelineStep<T, R> {
      * todos os erros encontrados, caso existam.
      */
     @Override
-    protected void doExecute(IntegrationContext<T, R> context) {
+    protected void doExecute(IntegrationContext<T, P, R> context) {
 
         ValidationResult validation = context.getConnector().validate(context);
 
@@ -26,15 +26,5 @@ public class ValidationStep<T, R> extends AbstractPipelineStep<T, R> {
         }
 
         context.getResult().addErrors(validation.getErrors());
-    }
-
-    private void addErrorsToContext(
-            IntegrationContext<T, R> context,
-            ValidationResult validation) {
-
-        validation.getErrors().forEach(error ->
-                context.getResult().addError(
-                        error.code(),
-                        error.message()));
     }
 }

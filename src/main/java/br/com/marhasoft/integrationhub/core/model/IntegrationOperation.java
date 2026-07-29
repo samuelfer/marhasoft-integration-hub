@@ -4,6 +4,7 @@ public enum IntegrationOperation {
 
     VEICULO,
     PROPRIETARIO,
-    LOCADOR
+    LOCADOR,
+    SERVIDOR
 
 }

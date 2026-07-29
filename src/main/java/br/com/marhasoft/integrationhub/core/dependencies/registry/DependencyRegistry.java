@@ -38,12 +38,13 @@ public class DependencyRegistry {
 
         for (RegisteredDependencyResolver registered : resolvers) {
 
-            DependencyResolver<T, P, R> resolver =
-                    registered.resolverTyped();
+            var resolver = registered.<T, P, R>resolverTyped();
 
-            if (resolver.supports(context)) {
-                resolver.resolve(context);
+            if (!resolver.supports(context)) {
+                continue;
             }
+
+            resolver.resolve(context);
         }
     }
 

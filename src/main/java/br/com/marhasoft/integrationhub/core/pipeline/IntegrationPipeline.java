@@ -7,20 +7,20 @@ import br.com.marhasoft.integrationhub.core.result.IntegrationStatus;
 
 import br.com.marhasoft.integrationhub.core.context.IntegrationContext;
 
-public class IntegrationPipeline<T, R> {
+public class IntegrationPipeline<T, P, R> {
 
-    private final List<PipelineStep<T, R>> steps;
+    private final List<PipelineStep<T, P, R>> steps;
 
-    public IntegrationPipeline(List<PipelineStep<T, R>> steps) {
+    public IntegrationPipeline(List<PipelineStep<T, P, R>> steps) {
         this.steps = steps.stream()
                 .sorted(Comparator.comparing(PipelineStep::phase))
                 .toList();
     }
 
-    public IntegrationContext<T, R> execute(
-            IntegrationContext<T, R> context) {
+    public IntegrationContext<T, P, R> execute(
+            IntegrationContext<T, P, R> context) {
 
-        for (PipelineStep<T, R> step : steps) {
+        for (PipelineStep<T, P, R> step : steps) {
 
             step.execute(context);
 
