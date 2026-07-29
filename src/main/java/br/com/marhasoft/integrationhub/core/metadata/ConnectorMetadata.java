@@ -10,11 +10,6 @@ public record ConnectorMetadata(
 
         IntegrationOperation operation,
 
-        IntegrationAction action,
-
-        String version,
-
-        String description
-
+        IntegrationAction action
 ) {
 }

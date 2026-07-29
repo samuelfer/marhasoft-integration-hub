@@ -1,0 +1,54 @@
+package br.com.marhasoft.integrationhub.modules.frotas.resolver;
+
+import br.com.marhasoft.integrationhub.core.context.IntegrationContext;
+import br.com.marhasoft.integrationhub.core.dependencies.registry.DependencyKey;
+import br.com.marhasoft.integrationhub.core.dependencies.resolver.DependencyResolver;
+import br.com.marhasoft.integrationhub.core.model.IntegrationAction;
+import br.com.marhasoft.integrationhub.core.model.IntegrationModule;
+import br.com.marhasoft.integrationhub.core.model.IntegrationOperation;
+import br.com.marhasoft.integrationhub.modules.frotas.api.dto.VeiculoRequest;
+import br.com.marhasoft.integrationhub.modules.frotas.infrastructure.client.PessoaClient;
+import br.com.marhasoft.integrationhub.modules.frotas.infrastructure.client.response.PessoaResponse;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+
+@Component
+@RequiredArgsConstructor
+public class ProprietarioDependencyResolver
+        implements DependencyResolver<
+        VeiculoRequest,
+        Object,
+        Object> {
+
+    private final PessoaClient pessoaClient;
+
+    @Override
+    public DependencyKey getDependencyKey() {
+        return new DependencyKey(
+                IntegrationModule.FROTAS,
+                IntegrationOperation.VEICULO,
+                IntegrationAction.CREATE);
+    }
+
+    @Override
+    public boolean supports(
+            IntegrationContext<VeiculoRequest, Object, Object> context) {
+        return true;
+    }
+
+    @Override
+    public void resolve(
+            IntegrationContext<VeiculoRequest, Object, Object> context) {
+
+        PessoaResponse proprietario = pessoaClient.buscar(
+                        context.getRequest().getCpfCnpjProprietario())
+                .orElse(null);
+
+        context.putAttribute("proprietario", proprietario);
+    }
+
+    @Override
+    public int getOrder() {
+        return 1;
+    }
+}

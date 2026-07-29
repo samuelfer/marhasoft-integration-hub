@@ -16,8 +16,12 @@ public class ValidationResult {
         return Collections.unmodifiableList(errors);
     }
 
-    public void addError(String code, String field, String message) {
-        errors.add(new ValidationError(code, field, message));
+    public void addError(Enum<?>  code, String message) {
+        errors.add(new ValidationError(code.name(), message));
+    }
+
+    public static ValidationResult valid() {
+        return new ValidationResult();
     }
 
 }

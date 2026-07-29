@@ -84,4 +84,28 @@ public class IntegrationContext<T, P, R> {
                 getMetadata().action());
 
     }
+
+    public T getRequest() {
+        return request;
+    }
+
+    public P getMappedPayload() {
+        return mappedPayload;
+    }
+
+    public R getResponse() {
+        return response;
+    }
+
+    public IntegrationConnector<T, P, R> getConnector() {
+        return connector;
+    }
+
+    public IntegrationConfiguration getConfiguration() {
+        return configuration;
+    }
+
+    public IntegrationResult getResult() {
+        return result;
+    }
 }

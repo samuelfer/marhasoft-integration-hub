@@ -11,7 +11,7 @@ public class DependencyRegistry {
 
     private final Map<DependencyKey, List<RegisteredDependencyResolver>> registry;
 
-    public DependencyRegistry(List<DependencyResolver<?, ?>> resolvers) {
+    public DependencyRegistry(List<DependencyResolver<?, ?, ?>> resolvers) {
         this.registry = buildRegistry(resolvers);
     }
 
@@ -25,10 +25,11 @@ public class DependencyRegistry {
      *
      * @param context contexto da integração em execução.
      * @param <T> tipo da requisição original.
-     * @param <R> tipo da requisição mapeada.
+     * @param <P> tipo do payload mapeado.
+     * @param <R> tipo da resposta.
      */
     @SuppressWarnings("unchecked")
-    public <T, R> void resolve(IntegrationContext<T, R> context) {
+    public <T, P, R> void resolve(IntegrationContext<T, P, R> context) {
 
         List<RegisteredDependencyResolver> resolvers =
                 registry.getOrDefault(
@@ -37,14 +38,13 @@ public class DependencyRegistry {
 
         for (RegisteredDependencyResolver registered : resolvers) {
 
-            DependencyResolver<T, R> resolver = registered.resolverTyped();
+            DependencyResolver<T, P, R> resolver =
+                    registered.resolverTyped();
 
             if (resolver.supports(context)) {
                 resolver.resolve(context);
             }
-
         }
-
     }
 
     /**
@@ -62,11 +62,11 @@ public class DependencyRegistry {
      *         {@link DependencyKey}.
      */
     private Map<DependencyKey, List<RegisteredDependencyResolver>> buildRegistry(
-            List<DependencyResolver<?, ?>> resolvers) {
+            List<DependencyResolver<?, ?, ?>> resolvers) {
 
         Map<DependencyKey, List<RegisteredDependencyResolver>> registry = new HashMap<>();
 
-        for (DependencyResolver<?, ?> resolver : resolvers) {
+        for (DependencyResolver<?, ?, ?> resolver : resolvers) {
 
             DependencyKey key = resolver.getDependencyKey();
 

@@ -12,15 +12,19 @@ import br.com.marhasoft.integrationhub.modules.frotas.api.dto.VeiculoResponse;
 import br.com.marhasoft.integrationhub.modules.frotas.application.mapper.VeiculoMapper;
 import br.com.marhasoft.integrationhub.modules.frotas.domain.model.VeiculoPayload;
 import br.com.marhasoft.integrationhub.modules.frotas.infrastructure.client.TceFrotasClient;
+import br.com.marhasoft.integrationhub.modules.frotas.validation.VeiculoValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class VeiculoConnector
-        implements IntegrationConnector<VeiculoRequest, VeiculoResponse> {
+public class VeiculoConnector implements IntegrationConnector<
+        VeiculoRequest,
+        VeiculoPayload,
+        VeiculoResponse> {
 
     private final VeiculoMapper mapper;
+    private final VeiculoValidator validator;
     private final TceFrotasClient client;
 
     @Override
@@ -33,15 +37,16 @@ public class VeiculoConnector
     }
 
     /**
-     * Valida a requisição antes do processamento da integração.
+     * Valida a requisição antes da execução da integração.
      */
     @Override
     public ValidationResult validate(
-            IntegrationContext<VeiculoRequest, VeiculoResponse> context) {
+            IntegrationContext<
+                    VeiculoRequest,
+                    VeiculoPayload,
+                    VeiculoResponse> context) {
 
-        // Inicialmente não existem validações.
-        // Elas serão implementadas conforme as regras de negócio.
-        return ValidationResult.valid();
+        return validator.validate(context.getRequest(), context);
     }
 
     /**
@@ -50,11 +55,15 @@ public class VeiculoConnector
      */
     @Override
     public void map(
-            IntegrationContext<VeiculoRequest, VeiculoResponse> context) {
+            IntegrationContext<
+                    VeiculoRequest,
+                    VeiculoPayload,
+                    VeiculoResponse> context) {
 
-        VeiculoPayload payload = mapper.toPayload(context.getRequest());
-
-        context.setMappedPayload(payload);
+        context.setMappedPayload(
+                mapper.toPayload(
+                        context.getRequest(),
+                        getMetadata().action()));
     }
 
     /**
@@ -62,12 +71,12 @@ public class VeiculoConnector
      */
     @Override
     public void send(
-            IntegrationContext<VeiculoRequest, VeiculoResponse> context) {
+            IntegrationContext<
+                    VeiculoRequest,
+                    VeiculoPayload,
+                    VeiculoResponse> context) {
 
-        VeiculoPayload payload = context.getMappedPayload();
-
-        VeiculoResponse response = client.enviar(payload);
-
-        context.setResponse(response);
+        context.setResponse(
+                client.cadastrarVeiculo(context.getMappedPayload()));
     }
 }
