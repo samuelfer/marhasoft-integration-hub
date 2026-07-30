@@ -1,4 +1,4 @@
-package br.com.marhasoft.integrationhub.modules.frotas.proprietario;
+package br.com.marhasoft.integrationhub.modules.frotas.locador;
 
 import br.com.marhasoft.integrationhub.core.connector.IntegrationConnector;
 import br.com.marhasoft.integrationhub.core.context.IntegrationContext;
@@ -8,19 +8,19 @@ import br.com.marhasoft.integrationhub.core.model.IntegrationModule;
 import br.com.marhasoft.integrationhub.core.model.IntegrationOperation;
 import br.com.marhasoft.integrationhub.core.validation.ValidationResult;
 import br.com.marhasoft.integrationhub.modules.frotas.TceFrotasClient;
-import br.com.marhasoft.integrationhub.modules.frotas.proprietario.model.ProprietarioBatchRequest;
-import br.com.marhasoft.integrationhub.modules.frotas.proprietario.model.ProprietarioPayload;
-import br.com.marhasoft.integrationhub.modules.frotas.proprietario.model.ProprietarioResponse;
-import br.com.marhasoft.integrationhub.modules.frotas.proprietario.validation.ProprietarioValidator;
+import br.com.marhasoft.integrationhub.modules.frotas.locador.model.LocadorBatchRequest;
+import br.com.marhasoft.integrationhub.modules.frotas.locador.model.LocadorPayload;
+import br.com.marhasoft.integrationhub.modules.frotas.locador.model.LocadorResponse;
+import br.com.marhasoft.integrationhub.modules.frotas.locador.validation.LocadorValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class ProprietarioConnector implements IntegrationConnector<
-        ProprietarioBatchRequest,
-        ProprietarioPayload,
-        ProprietarioResponse> {
+public class LocadorConnector implements IntegrationConnector<
+        LocadorBatchRequest,
+        LocadorPayload,
+        LocadorResponse> {
 
     private static final ConnectorMetadata METADATA =
             new ConnectorMetadata(
@@ -28,8 +28,8 @@ public class ProprietarioConnector implements IntegrationConnector<
                     IntegrationOperation.VEICULO,
                     IntegrationAction.CREATE);
 
-    private final ProprietarioMapper mapper;
-    private final ProprietarioValidator validator;
+    private final LocadorMapper mapper;
+    private final LocadorValidator validator;
     private final TceFrotasClient client;
 
     /**
@@ -44,9 +44,9 @@ public class ProprietarioConnector implements IntegrationConnector<
      * Valida a requisição antes da execução da integração.
      */
     @Override
-    public ValidationResult validate(IntegrationContext<ProprietarioBatchRequest,
-            ProprietarioPayload, ProprietarioResponse> context) {
-        return validateProprietarios(
+    public ValidationResult validate(IntegrationContext<LocadorBatchRequest,
+            LocadorPayload, LocadorResponse> context) {
+        return validateLocadores(
                 context.getRequest(),
                 context);
     }
@@ -57,8 +57,8 @@ public class ProprietarioConnector implements IntegrationConnector<
      */
     @Override
     public void map(
-            IntegrationContext<ProprietarioBatchRequest, ProprietarioPayload,
-                    ProprietarioResponse> context) {
+            IntegrationContext<LocadorBatchRequest, LocadorPayload,
+                    LocadorResponse> context) {
 
         context.setMappedPayload(
                 mapper.toPayload(
@@ -70,27 +70,27 @@ public class ProprietarioConnector implements IntegrationConnector<
      * Envia o payload ao sistema externo e registra a resposta da integração.
      */
     @Override
-    public void send(IntegrationContext<ProprietarioBatchRequest, ProprietarioPayload,
-                    ProprietarioResponse> context) {
+    public void send(IntegrationContext<LocadorBatchRequest, LocadorPayload,
+            LocadorResponse> context) {
 
         context.setResponse(
-                client.cadastrarProprietario(
+                client.cadastrarLocador(
                         context.getMappedPayload()));
     }
 
     /**
-     * Executa as validações de negócio para todos os proprietários do lote.
+     * Executa as validações de negócio para todos os locadores do lote.
      */
-    private ValidationResult validateProprietarios(ProprietarioBatchRequest request,
+    private ValidationResult validateLocadores(LocadorBatchRequest request,
                                                    IntegrationContext<?, ?, ?> context) {
 
         ValidationResult result = ValidationResult.valid();
 
         request.getElementos()
-                .forEach(proprietario ->
+                .forEach(locador ->
                         result.merge(
                                 validator.validate(
-                                        proprietario,
+                                        locador,
                                         context)));
 
         return result;

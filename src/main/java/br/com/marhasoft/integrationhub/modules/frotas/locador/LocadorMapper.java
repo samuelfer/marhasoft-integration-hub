@@ -1,16 +1,16 @@
-package br.com.marhasoft.integrationhub.modules.frotas.proprietario;
+package br.com.marhasoft.integrationhub.modules.frotas.locador;
 
 import br.com.marhasoft.integrationhub.core.model.IntegrationAction;
-import br.com.marhasoft.integrationhub.modules.frotas.proprietario.model.ProprietarioBatchRequest;
-import br.com.marhasoft.integrationhub.modules.frotas.proprietario.model.ProprietarioItemPayload;
-import br.com.marhasoft.integrationhub.modules.frotas.proprietario.model.ProprietarioPayload;
-import br.com.marhasoft.integrationhub.modules.frotas.proprietario.model.ProprietarioRequest;
+import br.com.marhasoft.integrationhub.modules.frotas.locador.model.LocadorBatchRequest;
+import br.com.marhasoft.integrationhub.modules.frotas.locador.model.LocadorItemPayload;
+import br.com.marhasoft.integrationhub.modules.frotas.locador.model.LocadorPayload;
+import br.com.marhasoft.integrationhub.modules.frotas.locador.model.LocadorRequest;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
 @Component
-public class ProprietarioMapper {
+public class LocadorMapper {
 
     /**
      * Converte a requisição recebida pela API para o payload esperado pelo TCE.
@@ -19,16 +19,16 @@ public class ProprietarioMapper {
      * @param action operação da integração.
      * @return payload pronto para envio ao TCE.
      */
-    public ProprietarioPayload toPayload(ProprietarioBatchRequest request,
-                                         IntegrationAction action) {
+    public LocadorPayload toPayload(LocadorBatchRequest request,
+                                    IntegrationAction action) {
 
-        ProprietarioPayload payload = ProprietarioPayload.builder()
+        LocadorPayload payload = LocadorPayload.builder()
                 .timestamp(LocalDateTime.now())
                 .build();
 
         request.getElementos()
                 .stream()
-                .map(proprietario -> mapItem(proprietario, action))
+                .map(locador -> mapItem(locador, action))
                 .forEach(payload.getElementos()::add);
 
         return payload;
@@ -36,11 +36,11 @@ public class ProprietarioMapper {
     /**
      * Converte a requisição em um item do payload.
      */
-    private ProprietarioItemPayload mapItem(
-            ProprietarioRequest request,
+    private LocadorItemPayload mapItem(
+            LocadorRequest request,
             IntegrationAction action) {
 
-        return ProprietarioItemPayload.builder()
+        return LocadorItemPayload.builder()
                 .cpfCnpj(request.getCpfCnpj())
                 .nome(request.getNome())
                 .action(action)

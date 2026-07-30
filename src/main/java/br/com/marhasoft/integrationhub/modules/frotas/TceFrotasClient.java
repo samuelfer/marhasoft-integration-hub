@@ -1,5 +1,7 @@
 package br.com.marhasoft.integrationhub.modules.frotas;
 
+import br.com.marhasoft.integrationhub.modules.frotas.locador.model.LocadorPayload;
+import br.com.marhasoft.integrationhub.modules.frotas.locador.model.LocadorResponse;
 import br.com.marhasoft.integrationhub.modules.frotas.proprietario.model.ProprietarioPayload;
 import br.com.marhasoft.integrationhub.modules.frotas.proprietario.model.ProprietarioResponse;
 import br.com.marhasoft.integrationhub.modules.frotas.veiculo.model.VeiculoResponse;
@@ -30,6 +32,16 @@ public class TceFrotasClient {
         System.out.println("ProprietarioPayload enviado para o TCE: " + payload);
 
         return ProprietarioResponse.builder()
+                .sucesso(true)
+                .mensagem("Integração realizada com sucesso.")
+                .build();
+    }
+
+    public LocadorResponse cadastrarLocador(LocadorPayload payload) {
+
+        System.out.println("LocadorPayload enviado para o TCE: " + payload);
+
+        return LocadorResponse.builder()
                 .sucesso(true)
                 .mensagem("Integração realizada com sucesso.")
                 .build();
