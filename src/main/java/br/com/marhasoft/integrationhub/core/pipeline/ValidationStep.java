@@ -3,8 +3,6 @@ package br.com.marhasoft.integrationhub.core.pipeline;
 import br.com.marhasoft.integrationhub.core.context.IntegrationContext;
 import br.com.marhasoft.integrationhub.core.validation.BeanValidationService;
 import br.com.marhasoft.integrationhub.core.validation.ValidationResult;
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Validator;
 
 public class ValidationStep<T, P, R> extends AbstractPipelineStep<T, P, R> {
 

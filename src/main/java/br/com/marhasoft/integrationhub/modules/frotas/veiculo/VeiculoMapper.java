@@ -1,6 +1,7 @@
 package br.com.marhasoft.integrationhub.modules.frotas.veiculo;
 
 import br.com.marhasoft.integrationhub.core.model.IntegrationAction;
+import br.com.marhasoft.integrationhub.modules.frotas.veiculo.model.VeiculoBatchRequest;
 import br.com.marhasoft.integrationhub.modules.frotas.veiculo.model.VeiculoRequest;
 import br.com.marhasoft.integrationhub.modules.frotas.veiculo.model.VeiculoItemPayload;
 import br.com.marhasoft.integrationhub.modules.frotas.veiculo.model.VeiculoPayload;
@@ -18,20 +19,20 @@ public class VeiculoMapper {
      * @param action operação da integração.
      * @return payload pronto para envio ao TCE.
      */
-    public VeiculoPayload toPayload(
-            VeiculoRequest request,
-            IntegrationAction action) {
+    public VeiculoPayload toPayload(VeiculoBatchRequest request,
+                                    IntegrationAction action) {
 
         VeiculoPayload payload = VeiculoPayload.builder()
                 .timestamp(LocalDateTime.now())
                 .build();
 
-        payload.getElementos().add(
-                mapItem(request, action));
+        request.getElementos()
+                .stream()
+                .map(veiculo -> mapItem(veiculo, action))
+                .forEach(payload.getElementos()::add);
 
         return payload;
     }
-
     /**
      * Converte a requisição em um item do payload.
      */

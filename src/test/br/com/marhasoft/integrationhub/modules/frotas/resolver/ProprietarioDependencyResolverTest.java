@@ -8,7 +8,6 @@ import br.com.marhasoft.integrationhub.core.model.IntegrationOperation;
 import br.com.marhasoft.integrationhub.modules.frotas.veiculo.model.VeiculoRequest;
 import br.com.marhasoft.integrationhub.modules.frotas.veiculo.client.PessoaClient;
 import br.com.marhasoft.integrationhub.modules.frotas.veiculo.client.PessoaClientResponse;
-import br.com.marhasoft.integrationhub.modules.frotas.veiculo.resolver.ProprietarioDependencyResolver;
 import br.com.marhasoft.integrationhub.support.VeiculoTestDataFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
