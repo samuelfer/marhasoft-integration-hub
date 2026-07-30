@@ -20,6 +20,18 @@ public class ValidationResult {
         errors.add(new ValidationError(code.name(), message));
     }
 
+    public void merge(ValidationResult validationResult) {
+        this.errors.addAll(validationResult.getErrors());
+    }
+
+    public void addError(String message) {
+        errors.add(new ValidationError(null, message));
+    }
+
+    public void addError(String field, String message) {
+        errors.add(new ValidationError(field, message));
+    }
+
     public static ValidationResult valid() {
         return new ValidationResult();
     }
