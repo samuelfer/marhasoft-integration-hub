@@ -1,6 +1,6 @@
 package br.com.marhasoft.integrationhub.support;
 
-import br.com.marhasoft.integrationhub.modules.frotas.api.dto.VeiculoRequest;
+import br.com.marhasoft.integrationhub.modules.frotas.veiculo.model.VeiculoRequest;
 
 public final class VeiculoTestDataFactory {
 

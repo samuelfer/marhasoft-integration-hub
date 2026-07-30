@@ -1,6 +1,5 @@
-package br.com.marhasoft.integrationhub.modules.frotas.infrastructure.client;
+package br.com.marhasoft.integrationhub.modules.frotas.veiculo.client;
 
-import br.com.marhasoft.integrationhub.modules.frotas.infrastructure.client.response.PessoaResponse;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -8,12 +7,12 @@ import java.util.Optional;
 @Component
 public class PessoaClient {
 
-    public Optional<PessoaResponse> buscar(String cpfCnpj) {
+    public Optional<PessoaClientResponse> buscar(String cpfCnpj) {
 
         // TODO Implementar consulta real
 
         return Optional.of(
-                PessoaResponse.builder()
+                PessoaClientResponse.builder()
                         .id(1L)
                         .cpfCnpj(cpfCnpj)
                         .nome("Pessoa de Teste")

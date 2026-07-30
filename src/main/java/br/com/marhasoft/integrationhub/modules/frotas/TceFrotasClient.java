@@ -1,7 +1,7 @@
-package br.com.marhasoft.integrationhub.modules.frotas.infrastructure.client;
+package br.com.marhasoft.integrationhub.modules.frotas;
 
-import br.com.marhasoft.integrationhub.modules.frotas.api.dto.VeiculoResponse;
-import br.com.marhasoft.integrationhub.modules.frotas.domain.model.VeiculoPayload;
+import br.com.marhasoft.integrationhub.modules.frotas.veiculo.model.VeiculoResponse;
+import br.com.marhasoft.integrationhub.modules.frotas.veiculo.model.VeiculoPayload;
 import org.springframework.stereotype.Component;
 
 @Component

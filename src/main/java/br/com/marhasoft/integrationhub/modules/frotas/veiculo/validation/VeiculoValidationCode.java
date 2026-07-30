@@ -1,4 +1,4 @@
-package br.com.marhasoft.integrationhub.modules.frotas.validation;
+package br.com.marhasoft.integrationhub.modules.frotas.veiculo.validation;
 
 public enum VeiculoValidationCode {
 

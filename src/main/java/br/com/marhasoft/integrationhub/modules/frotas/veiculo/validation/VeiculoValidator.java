@@ -1,8 +1,8 @@
-package br.com.marhasoft.integrationhub.modules.frotas.validation;
+package br.com.marhasoft.integrationhub.modules.frotas.veiculo.validation;
 
 import br.com.marhasoft.integrationhub.core.context.IntegrationContext;
 import br.com.marhasoft.integrationhub.core.validation.ValidationResult;
-import br.com.marhasoft.integrationhub.modules.frotas.api.dto.VeiculoRequest;
+import br.com.marhasoft.integrationhub.modules.frotas.veiculo.model.VeiculoRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

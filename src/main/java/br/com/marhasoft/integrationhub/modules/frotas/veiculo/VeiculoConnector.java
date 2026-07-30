@@ -1,4 +1,4 @@
-package br.com.marhasoft.integrationhub.modules.frotas.connector;
+package br.com.marhasoft.integrationhub.modules.frotas.veiculo;
 
 import br.com.marhasoft.integrationhub.core.connector.IntegrationConnector;
 import br.com.marhasoft.integrationhub.core.context.IntegrationContext;
@@ -7,12 +7,10 @@ import br.com.marhasoft.integrationhub.core.model.IntegrationAction;
 import br.com.marhasoft.integrationhub.core.model.IntegrationModule;
 import br.com.marhasoft.integrationhub.core.model.IntegrationOperation;
 import br.com.marhasoft.integrationhub.core.validation.ValidationResult;
-import br.com.marhasoft.integrationhub.modules.frotas.api.dto.VeiculoRequest;
-import br.com.marhasoft.integrationhub.modules.frotas.api.dto.VeiculoResponse;
-import br.com.marhasoft.integrationhub.modules.frotas.application.mapper.VeiculoMapper;
-import br.com.marhasoft.integrationhub.modules.frotas.domain.model.VeiculoPayload;
-import br.com.marhasoft.integrationhub.modules.frotas.infrastructure.client.TceFrotasClient;
-import br.com.marhasoft.integrationhub.modules.frotas.validation.VeiculoValidator;
+import br.com.marhasoft.integrationhub.modules.frotas.veiculo.model.VeiculoRequest;
+import br.com.marhasoft.integrationhub.modules.frotas.veiculo.model.VeiculoResponse;
+import br.com.marhasoft.integrationhub.modules.frotas.veiculo.model.VeiculoPayload;
+import br.com.marhasoft.integrationhub.modules.frotas.veiculo.validation.VeiculoValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

@@ -5,9 +5,10 @@ import br.com.marhasoft.integrationhub.core.dependencies.registry.DependencyKey;
 import br.com.marhasoft.integrationhub.core.model.IntegrationAction;
 import br.com.marhasoft.integrationhub.core.model.IntegrationModule;
 import br.com.marhasoft.integrationhub.core.model.IntegrationOperation;
-import br.com.marhasoft.integrationhub.modules.frotas.api.dto.VeiculoRequest;
-import br.com.marhasoft.integrationhub.modules.frotas.infrastructure.client.PessoaClient;
-import br.com.marhasoft.integrationhub.modules.frotas.infrastructure.client.response.PessoaResponse;
+import br.com.marhasoft.integrationhub.modules.frotas.veiculo.model.VeiculoRequest;
+import br.com.marhasoft.integrationhub.modules.frotas.veiculo.client.PessoaClient;
+import br.com.marhasoft.integrationhub.modules.frotas.veiculo.client.PessoaClientResponse;
+import br.com.marhasoft.integrationhub.modules.frotas.veiculo.resolver.LocadorDependencyResolver;
 import br.com.marhasoft.integrationhub.support.VeiculoTestDataFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -78,7 +79,7 @@ class LocadorDependencyResolverTest {
         IntegrationContext<VeiculoRequest, Object, Object> context =
                 criarContexto();
 
-        PessoaResponse locador = new PessoaResponse();
+        PessoaClientResponse locador = new PessoaClientResponse();
 
         when(pessoaClient.buscar(request.getCpfCnpjLocador()))
                 .thenReturn(Optional.of(locador));
@@ -86,7 +87,7 @@ class LocadorDependencyResolverTest {
         resolver.resolve(context);
 
         assertThat(
-                context.getAttribute("locador", PessoaResponse.class))
+                context.getAttribute("locador", PessoaClientResponse.class))
                 .isSameAs(locador);
 
         verify(pessoaClient)
@@ -108,7 +109,7 @@ class LocadorDependencyResolverTest {
         resolver.resolve(context);
 
         assertThat(
-                context.getAttribute("locador", PessoaResponse.class))
+                context.getAttribute("locador", PessoaClientResponse.class))
                 .isNull();
 
         verify(pessoaClient)

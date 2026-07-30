@@ -1,4 +1,4 @@
-package br.com.marhasoft.integrationhub.modules.frotas.domain.model;
+package br.com.marhasoft.integrationhub.modules.frotas.veiculo.model;
 
 import lombok.*;
 

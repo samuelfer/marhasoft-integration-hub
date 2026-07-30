@@ -5,9 +5,10 @@ import br.com.marhasoft.integrationhub.core.dependencies.registry.DependencyKey;
 import br.com.marhasoft.integrationhub.core.model.IntegrationAction;
 import br.com.marhasoft.integrationhub.core.model.IntegrationModule;
 import br.com.marhasoft.integrationhub.core.model.IntegrationOperation;
-import br.com.marhasoft.integrationhub.modules.frotas.api.dto.VeiculoRequest;
-import br.com.marhasoft.integrationhub.modules.frotas.infrastructure.client.PessoaClient;
-import br.com.marhasoft.integrationhub.modules.frotas.infrastructure.client.response.PessoaResponse;
+import br.com.marhasoft.integrationhub.modules.frotas.veiculo.model.VeiculoRequest;
+import br.com.marhasoft.integrationhub.modules.frotas.veiculo.client.PessoaClient;
+import br.com.marhasoft.integrationhub.modules.frotas.veiculo.client.PessoaClientResponse;
+import br.com.marhasoft.integrationhub.modules.frotas.veiculo.resolver.ProprietarioDependencyResolver;
 import br.com.marhasoft.integrationhub.support.VeiculoTestDataFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -66,7 +67,7 @@ class ProprietarioDependencyResolverTest {
         IntegrationContext<VeiculoRequest, Object, Object> context =
                 criarContexto();
 
-        PessoaResponse proprietario = new PessoaResponse();
+        PessoaClientResponse proprietario = new PessoaClientResponse();
 
         when(pessoaClient.buscar(request.getCpfCnpjProprietario()))
                 .thenReturn(Optional.of(proprietario));
@@ -74,7 +75,7 @@ class ProprietarioDependencyResolverTest {
         resolver.resolve(context);
 
         assertThat(
-                context.getAttribute("proprietario", PessoaResponse.class))
+                context.getAttribute("proprietario", PessoaClientResponse.class))
                 .isSameAs(proprietario);
 
         verify(pessoaClient)
@@ -96,7 +97,7 @@ class ProprietarioDependencyResolverTest {
         resolver.resolve(context);
 
         assertThat(
-                context.getAttribute("proprietario", PessoaResponse.class))
+                context.getAttribute("proprietario", PessoaClientResponse.class))
                 .isNull();
 
         verify(pessoaClient)

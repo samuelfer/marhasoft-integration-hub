@@ -1,4 +1,4 @@
-package br.com.marhasoft.integrationhub.modules.frotas.resolver;
+package br.com.marhasoft.integrationhub.modules.frotas.veiculo.resolver;
 
 import br.com.marhasoft.integrationhub.core.context.IntegrationContext;
 import br.com.marhasoft.integrationhub.core.dependencies.registry.DependencyKey;
@@ -6,15 +6,14 @@ import br.com.marhasoft.integrationhub.core.dependencies.resolver.DependencyReso
 import br.com.marhasoft.integrationhub.core.model.IntegrationAction;
 import br.com.marhasoft.integrationhub.core.model.IntegrationModule;
 import br.com.marhasoft.integrationhub.core.model.IntegrationOperation;
-import br.com.marhasoft.integrationhub.modules.frotas.api.dto.VeiculoRequest;
-import br.com.marhasoft.integrationhub.modules.frotas.infrastructure.client.PessoaClient;
-import br.com.marhasoft.integrationhub.modules.frotas.infrastructure.client.response.PessoaResponse;
+import br.com.marhasoft.integrationhub.modules.frotas.veiculo.model.VeiculoRequest;
+import br.com.marhasoft.integrationhub.modules.frotas.veiculo.client.PessoaClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class LocadorDependencyResolver
+public class ProprietarioDependencyResolver
         implements DependencyResolver<
         VeiculoRequest,
         Object,
@@ -33,22 +32,20 @@ public class LocadorDependencyResolver
     @Override
     public boolean supports(
             IntegrationContext<VeiculoRequest, Object, Object> context) {
-        return context.getRequest().getCpfCnpjLocador() != null;
+        return true;
     }
 
     @Override
     public void resolve(
             IntegrationContext<VeiculoRequest, Object, Object> context) {
 
-        PessoaResponse locador = pessoaClient.buscar(
-                        context.getRequest().getCpfCnpjLocador())
-                .orElse(null);
-
-        context.putAttribute("locador", locador);
+        pessoaClient.buscar(context.getRequest().getCpfCnpjProprietario())
+                .ifPresent(proprietario ->
+                        context.putAttribute("proprietario", proprietario));
     }
 
     @Override
     public int getOrder() {
-        return 2;
+        return 1;
     }
 }

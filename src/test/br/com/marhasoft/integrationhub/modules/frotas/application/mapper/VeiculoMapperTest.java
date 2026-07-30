@@ -1,9 +1,10 @@
 package br.com.marhasoft.integrationhub.modules.frotas.application.mapper;
 
 import br.com.marhasoft.integrationhub.core.model.IntegrationAction;
-import br.com.marhasoft.integrationhub.modules.frotas.api.dto.VeiculoRequest;
-import br.com.marhasoft.integrationhub.modules.frotas.domain.model.VeiculoItemPayload;
-import br.com.marhasoft.integrationhub.modules.frotas.domain.model.VeiculoPayload;
+import br.com.marhasoft.integrationhub.modules.frotas.veiculo.model.VeiculoRequest;
+import br.com.marhasoft.integrationhub.modules.frotas.veiculo.VeiculoMapper;
+import br.com.marhasoft.integrationhub.modules.frotas.veiculo.model.VeiculoItemPayload;
+import br.com.marhasoft.integrationhub.modules.frotas.veiculo.model.VeiculoPayload;
 import br.com.marhasoft.integrationhub.support.VeiculoTestDataFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

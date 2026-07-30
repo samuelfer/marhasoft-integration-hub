@@ -1,4 +1,4 @@
-package br.com.marhasoft.integrationhub.modules.frotas.infrastructure.client.response;
+package br.com.marhasoft.integrationhub.modules.frotas.veiculo.client;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,7 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PessoaResponse {
+public class PessoaClientResponse {
 
     /**
      * Identificador da pessoa no sistema do TCE ou sistema intermediário.
