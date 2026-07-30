@@ -58,7 +58,6 @@ public class IntegrationResult {
         messages.add(message);
     }
 
-
     public void addError(String code, String message) {
         messages.add(new IntegrationMessage(
                 MessageType.ERROR,
@@ -86,6 +85,54 @@ public class IntegrationResult {
     public boolean hasWarnings() {
         return messages.stream()
                 .anyMatch(message -> message.type() == MessageType.WARNING);
+    }
+
+    public boolean hasError(String code) {
+        return hasMessage(MessageType.ERROR, code);
+    }
+
+    public boolean hasWarning(String code) {
+        return hasMessage(MessageType.WARNING, code);
+    }
+
+    public boolean hasInfo(String code) {
+        return hasMessage(MessageType.INFO, code);
+    }
+
+    public boolean hasError(Enum<?> code) {
+        return hasError(code.name());
+    }
+
+    public boolean hasWarning(Enum<?> code) {
+        return hasWarning(code.name());
+    }
+
+    public boolean hasInfo(Enum<?> code) {
+        return hasInfo(code.name());
+    }
+
+    private boolean hasMessage(MessageType type, String code) {
+        return messages.stream()
+                .anyMatch(message ->
+                        message.type() == type
+                                && code.equals(message.code()));
+    }
+
+    public void clear() {
+        status = IntegrationStatus.PENDING;
+        messages.clear();
+        exception = null;
+    }
+
+    public void merge(IntegrationResult other) {
+
+        this.status = other.getStatus();
+
+        this.messages.addAll(other.getMessages());
+
+        if (other.getException() != null) {
+            this.exception = other.getException();
+        }
     }
 
 }

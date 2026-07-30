@@ -34,7 +34,7 @@ public class DefaultIntegrationExecutor
      * <p>As etapas são injetadas automaticamente pelo Spring e ordenadas pelo
      * próprio {@link IntegrationPipeline} de acordo com a fase de execução.</p>
      */
-    private final List<PipelineStep<?, ?, ?>> steps;
+    private final List<PipelineStep<?, ?>> steps;
 
     /**
      * Executa uma integração utilizando o connector informado.
@@ -48,14 +48,13 @@ public class DefaultIntegrationExecutor
      * @param configuration configuração utilizada durante a integração.
      * @param <T> tipo da requisição.
      * @param <P> tipo do payload enviado ao sistema externo.
-     * @param <R> tipo da resposta retornada pelo sistema externo.
      * @return resultado da execução da integração.
      * @throws NullPointerException caso algum parâmetro obrigatório seja nulo.
      */
     @Override
     @SuppressWarnings("unchecked")
-    public <T, P, R> IntegrationResult execute(
-            IntegrationConnector<T, P, R> connector,
+    public <T, P> IntegrationResult execute(
+            IntegrationConnector<T, P> connector,
             T request,
             IntegrationConfiguration configuration) {
 
@@ -64,15 +63,15 @@ public class DefaultIntegrationExecutor
         Objects.requireNonNull(configuration,
                 "A configuração da integração é obrigatória.");
 
-        IntegrationContext<T, P, R> context =
+        IntegrationContext<T, P> context =
                 new IntegrationContext<>(
                         request,
                         connector,
                         configuration);
 
-        IntegrationPipeline<T, P, R> pipeline =
+        IntegrationPipeline<T, P> pipeline =
                 new IntegrationPipeline<>(
-                        (List<PipelineStep<T, P, R>>) (List<?>) steps);
+                        (List<PipelineStep<T, P>>) (List<?>) steps);
 
         pipeline.execute(context);
         return context.getResult();

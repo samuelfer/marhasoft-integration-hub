@@ -12,7 +12,7 @@ public class LocadorValidator {
 
     public ValidationResult validate(
             LocadorRequest request,
-            IntegrationContext<?, ?, ?> context) {
+            IntegrationContext<?, ?> context) {
 
         return ValidationResult.valid();
     }

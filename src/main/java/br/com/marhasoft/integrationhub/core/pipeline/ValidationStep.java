@@ -6,7 +6,7 @@ import br.com.marhasoft.integrationhub.core.validation.ValidationResult;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ValidationStep<T, P, R> extends AbstractPipelineStep<T, P, R> {
+public class ValidationStep<T, P> extends AbstractPipelineStep<T, P> {
 
     private final BeanValidationService beanValidationService;
 
@@ -24,7 +24,7 @@ public class ValidationStep<T, P, R> extends AbstractPipelineStep<T, P, R> {
      * todos os erros encontrados, caso existam.
      */
     @Override
-    protected void doExecute(IntegrationContext<T, P, R> context) {
+    protected void doExecute(IntegrationContext<T, P> context) {
         ValidationResult validation =
                 beanValidationService.validate(context.getRequest());
 

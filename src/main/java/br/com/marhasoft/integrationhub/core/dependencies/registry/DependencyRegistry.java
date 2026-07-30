@@ -11,7 +11,7 @@ public class DependencyRegistry {
 
     private final Map<DependencyKey, List<RegisteredDependencyResolver>> registry;
 
-    public DependencyRegistry(List<DependencyResolver<?, ?, ?>> resolvers) {
+    public DependencyRegistry(List<DependencyResolver<?, ?>> resolvers) {
         this.registry = buildRegistry(resolvers);
     }
 
@@ -26,10 +26,9 @@ public class DependencyRegistry {
      * @param context contexto da integração em execução.
      * @param <T> tipo da requisição original.
      * @param <P> tipo do payload mapeado.
-     * @param <R> tipo da resposta.
      */
     @SuppressWarnings("unchecked")
-    public <T, P, R> void resolve(IntegrationContext<T, P, R> context) {
+    public <T, P> void resolve(IntegrationContext<T, P> context) {
 
         List<RegisteredDependencyResolver> resolvers =
                 registry.getOrDefault(
@@ -38,7 +37,7 @@ public class DependencyRegistry {
 
         for (RegisteredDependencyResolver registered : resolvers) {
 
-            var resolver = registered.<T, P, R>resolverTyped();
+            var resolver = registered.<T, P>resolverTyped();
 
             if (!resolver.supports(context)) {
                 continue;
@@ -63,11 +62,11 @@ public class DependencyRegistry {
      *         {@link DependencyKey}.
      */
     private Map<DependencyKey, List<RegisteredDependencyResolver>> buildRegistry(
-            List<DependencyResolver<?, ?, ?>> resolvers) {
+            List<DependencyResolver<?, ?>> resolvers) {
 
         Map<DependencyKey, List<RegisteredDependencyResolver>> registry = new HashMap<>();
 
-        for (DependencyResolver<?, ?, ?> resolver : resolvers) {
+        for (DependencyResolver<?, ?> resolver : resolvers) {
 
             DependencyKey key = resolver.getDependencyKey();
 

@@ -1,11 +1,12 @@
 package br.com.marhasoft.integrationhub.modules.frotas;
 
+import br.com.marhasoft.integrationhub.core.result.IntegrationResult;
+import br.com.marhasoft.integrationhub.core.result.IntegrationStatus;
 import br.com.marhasoft.integrationhub.modules.frotas.locador.model.LocadorPayload;
-import br.com.marhasoft.integrationhub.modules.frotas.locador.model.LocadorResponse;
+import br.com.marhasoft.integrationhub.modules.frotas.locador.validation.LocadorValidationCode;
 import br.com.marhasoft.integrationhub.modules.frotas.proprietario.model.ProprietarioPayload;
-import br.com.marhasoft.integrationhub.modules.frotas.proprietario.model.ProprietarioResponse;
-import br.com.marhasoft.integrationhub.modules.frotas.veiculo.model.VeiculoResponse;
 import br.com.marhasoft.integrationhub.modules.frotas.veiculo.model.VeiculoPayload;
+import br.com.marhasoft.integrationhub.modules.frotas.veiculo.validation.VeiculoValidationCode;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -17,34 +18,53 @@ public class TceFrotasClient {
      * @param payload payload já convertido para o formato esperado pelo TCE.
      * @return resposta da integração.
      */
-    public VeiculoResponse cadastrarVeiculo(VeiculoPayload payload) {
+    public IntegrationResult cadastrarVeiculo(VeiculoPayload payload) {
+        IntegrationResult result = new IntegrationResult();
 
-        System.out.println("VeiculoPayload enviado para o TCE: " + payload);
+        result.setStatus(IntegrationStatus.ERROR);
 
-        return VeiculoResponse.builder()
-                .sucesso(true)
-                .mensagem("Integração realizada com sucesso.")
-                .build();
+        result.addError(
+                VeiculoValidationCode.VEICULO_PROPRIETARIO_CADASTRADO.name(),
+                "O proprietário informado não está cadastrado no TCE.");
+
+        return result;
     }
 
-    public ProprietarioResponse cadastrarProprietario(ProprietarioPayload payload) {
+    public IntegrationResult cadastrarProprietario(ProprietarioPayload payload) {
 
-        System.out.println("ProprietarioPayload enviado para o TCE: " + payload);
+        IntegrationResult result = new IntegrationResult();
 
-        return ProprietarioResponse.builder()
-                .sucesso(true)
-                .mensagem("Integração realizada com sucesso.")
-                .build();
+        result.setStatus(IntegrationStatus.SUCCESS);
+
+        result.addInfo(
+                "LOCADOR_CADASTRADO",
+                "Locador cadastrado com sucesso.");
+
+        return result;
     }
 
-    public LocadorResponse cadastrarLocador(LocadorPayload payload) {
+    public IntegrationResult cadastrarLocador(LocadorPayload payload) {
 
-        System.out.println("LocadorPayload enviado para o TCE: " + payload);
+        IntegrationResult result = new IntegrationResult();
 
-        return LocadorResponse.builder()
-                .sucesso(true)
-                .mensagem("Integração realizada com sucesso.")
-                .build();
+        result.setStatus(IntegrationStatus.SUCCESS);
+
+        result.addInfo(
+                "PROPRIETARIO_CADASTRADO",
+                "Proprietário cadastrado com sucesso.");
+
+        return result;
+
+        //simular erro
+//        IntegrationResult result = new IntegrationResult();
+//
+//        result.setStatus(IntegrationStatus.ERROR);
+//
+//        result.addError(
+//                LocadorValidationCode.LOCADOR_PRESTADOR_DUPLICIDADE_NAO_PERMITIDA.name(),
+//                "Locador já cadastrado.");
+//
+//        return result;
     }
 
 }

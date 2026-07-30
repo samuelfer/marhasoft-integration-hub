@@ -4,7 +4,7 @@ import br.com.marhasoft.integrationhub.core.context.IntegrationContext;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MappingStep<T, P, R> extends AbstractPipelineStep<T, P, R> {
+public class MappingStep<T, P> extends AbstractPipelineStep<T, P> {
 
     @Override
     public PipelinePhase phase() {
@@ -12,7 +12,7 @@ public class MappingStep<T, P, R> extends AbstractPipelineStep<T, P, R> {
     }
 
     @Override
-    protected void doExecute(IntegrationContext<T, P, R> context) {
+    protected void doExecute(IntegrationContext<T, P> context) {
         context.getConnector().map(context);
     }
 }

@@ -3,7 +3,7 @@ package br.com.marhasoft.integrationhub.core.dependencies.resolver;
 import br.com.marhasoft.integrationhub.core.context.IntegrationContext;
 import br.com.marhasoft.integrationhub.core.dependencies.registry.DependencyKey;
 
-public interface DependencyResolver<T,  P, R> {
+public interface DependencyResolver<T, P> {
 
     /**
      * Retorna a chave que identifica para qual integração este resolvedor
@@ -22,13 +22,13 @@ public interface DependencyResolver<T,  P, R> {
     /**
      * Indica se este resolvedor deve ser executado para o contexto informado.
      */
-    default boolean supports(IntegrationContext<T, P, R> context) {
+    default boolean supports(IntegrationContext<T, P> context) {
         return true;
     }
 
     /**
      * Resolve a dependência.
      */
-    void resolve(IntegrationContext<T,  P, R> context);
+    void resolve(IntegrationContext<T,  P> context);
 
 }

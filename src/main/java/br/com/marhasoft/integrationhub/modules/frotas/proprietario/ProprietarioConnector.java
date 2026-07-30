@@ -10,7 +10,6 @@ import br.com.marhasoft.integrationhub.core.validation.ValidationResult;
 import br.com.marhasoft.integrationhub.modules.frotas.TceFrotasClient;
 import br.com.marhasoft.integrationhub.modules.frotas.proprietario.model.ProprietarioBatchRequest;
 import br.com.marhasoft.integrationhub.modules.frotas.proprietario.model.ProprietarioPayload;
-import br.com.marhasoft.integrationhub.modules.frotas.proprietario.model.ProprietarioResponse;
 import br.com.marhasoft.integrationhub.modules.frotas.proprietario.validation.ProprietarioValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -19,8 +18,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ProprietarioConnector implements IntegrationConnector<
         ProprietarioBatchRequest,
-        ProprietarioPayload,
-        ProprietarioResponse> {
+        ProprietarioPayload> {
 
     private static final ConnectorMetadata METADATA =
             new ConnectorMetadata(
@@ -45,7 +43,7 @@ public class ProprietarioConnector implements IntegrationConnector<
      */
     @Override
     public ValidationResult validate(IntegrationContext<ProprietarioBatchRequest,
-            ProprietarioPayload, ProprietarioResponse> context) {
+            ProprietarioPayload> context) {
         return validateProprietarios(
                 context.getRequest(),
                 context);
@@ -57,8 +55,7 @@ public class ProprietarioConnector implements IntegrationConnector<
      */
     @Override
     public void map(
-            IntegrationContext<ProprietarioBatchRequest, ProprietarioPayload,
-                    ProprietarioResponse> context) {
+            IntegrationContext<ProprietarioBatchRequest, ProprietarioPayload> context) {
 
         context.setMappedPayload(
                 mapper.toPayload(
@@ -70,10 +67,8 @@ public class ProprietarioConnector implements IntegrationConnector<
      * Envia o payload ao sistema externo e registra a resposta da integração.
      */
     @Override
-    public void send(IntegrationContext<ProprietarioBatchRequest, ProprietarioPayload,
-                    ProprietarioResponse> context) {
-
-        context.setResponse(
+    public void send(IntegrationContext<ProprietarioBatchRequest, ProprietarioPayload> context) {
+        context.getResult().merge(
                 client.cadastrarProprietario(
                         context.getMappedPayload()));
     }
@@ -82,7 +77,7 @@ public class ProprietarioConnector implements IntegrationConnector<
      * Executa as validações de negócio para todos os proprietários do lote.
      */
     private ValidationResult validateProprietarios(ProprietarioBatchRequest request,
-                                                   IntegrationContext<?, ?, ?> context) {
+                                                   IntegrationContext<?, ?> context) {
 
         ValidationResult result = ValidationResult.valid();
 

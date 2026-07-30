@@ -10,7 +10,6 @@ import br.com.marhasoft.integrationhub.core.validation.ValidationResult;
 import br.com.marhasoft.integrationhub.modules.frotas.TceFrotasClient;
 import br.com.marhasoft.integrationhub.modules.frotas.locador.model.LocadorBatchRequest;
 import br.com.marhasoft.integrationhub.modules.frotas.locador.model.LocadorPayload;
-import br.com.marhasoft.integrationhub.modules.frotas.locador.model.LocadorResponse;
 import br.com.marhasoft.integrationhub.modules.frotas.locador.validation.LocadorValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -18,9 +17,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class LocadorConnector implements IntegrationConnector<
-        LocadorBatchRequest,
-        LocadorPayload,
-        LocadorResponse> {
+        LocadorBatchRequest, LocadorPayload> {
 
     private static final ConnectorMetadata METADATA =
             new ConnectorMetadata(
@@ -45,7 +42,7 @@ public class LocadorConnector implements IntegrationConnector<
      */
     @Override
     public ValidationResult validate(IntegrationContext<LocadorBatchRequest,
-            LocadorPayload, LocadorResponse> context) {
+            LocadorPayload> context) {
         return validateLocadores(
                 context.getRequest(),
                 context);
@@ -57,8 +54,7 @@ public class LocadorConnector implements IntegrationConnector<
      */
     @Override
     public void map(
-            IntegrationContext<LocadorBatchRequest, LocadorPayload,
-                    LocadorResponse> context) {
+            IntegrationContext<LocadorBatchRequest, LocadorPayload> context) {
 
         context.setMappedPayload(
                 mapper.toPayload(
@@ -70,10 +66,9 @@ public class LocadorConnector implements IntegrationConnector<
      * Envia o payload ao sistema externo e registra a resposta da integração.
      */
     @Override
-    public void send(IntegrationContext<LocadorBatchRequest, LocadorPayload,
-            LocadorResponse> context) {
+    public void send(IntegrationContext<LocadorBatchRequest, LocadorPayload> context) {
 
-        context.setResponse(
+        context.getResult().merge(
                 client.cadastrarLocador(
                         context.getMappedPayload()));
     }
@@ -82,7 +77,7 @@ public class LocadorConnector implements IntegrationConnector<
      * Executa as validações de negócio para todos os locadores do lote.
      */
     private ValidationResult validateLocadores(LocadorBatchRequest request,
-                                                   IntegrationContext<?, ?, ?> context) {
+                                                   IntegrationContext<?, ?> context) {
 
         ValidationResult result = ValidationResult.valid();
 

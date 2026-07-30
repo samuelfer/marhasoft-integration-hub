@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class DependencyResolutionStep<T, P, R> extends AbstractPipelineStep<T, P, R> {
+public class DependencyResolutionStep<T, P> extends AbstractPipelineStep<T, P> {
 
     private final DependencyRegistry dependencyRegistry;
 
@@ -19,7 +19,7 @@ public class DependencyResolutionStep<T, P, R> extends AbstractPipelineStep<T, P
     }
 
     @Override
-    protected void doExecute(IntegrationContext<T, P, R> context) {
+    protected void doExecute(IntegrationContext<T, P> context) {
         dependencyRegistry.resolve(context);
     }
 }

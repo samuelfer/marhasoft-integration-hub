@@ -5,11 +5,11 @@ import br.com.marhasoft.integrationhub.core.dependencies.resolver.DependencyReso
 public record RegisteredDependencyResolver(
         int order,
 
-        DependencyResolver<?, ?, ?> resolver
+        DependencyResolver<?, ?> resolver
 ) {
 
     @SuppressWarnings("unchecked")
-    public <T, P, R> DependencyResolver<T, P, R> resolverTyped() {
-        return (DependencyResolver<T, P, R>) resolver;
+    public <T, P> DependencyResolver<T, P> resolverTyped() {
+        return (DependencyResolver<T, P>) resolver;
     }
 }

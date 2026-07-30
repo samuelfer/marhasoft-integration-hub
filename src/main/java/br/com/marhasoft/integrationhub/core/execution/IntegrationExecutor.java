@@ -46,11 +46,10 @@ public interface IntegrationExecutor {
      * integração.
      * @param <T> tipo da requisição.
      * @param <P> tipo do payload enviado ao sistema externo.
-     * @param <R> tipo da resposta retornada pelo sistema externo.
      * @return resultado da execução da integração.
      */
-    <T, P, R> IntegrationResult execute(
-            IntegrationConnector<T, P, R> connector,
+    <T, P> IntegrationResult execute(
+            IntegrationConnector<T, P> connector,
             T request,
             IntegrationConfiguration configuration);
 

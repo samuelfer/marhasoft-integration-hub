@@ -7,23 +7,19 @@ import br.com.marhasoft.integrationhub.core.connector.IntegrationConnector;
 import br.com.marhasoft.integrationhub.core.dependencies.registry.DependencyKey;
 import br.com.marhasoft.integrationhub.core.metadata.ConnectorMetadata;
 import br.com.marhasoft.integrationhub.core.result.IntegrationResult;
-import lombok.Getter;
 import lombok.Setter;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class IntegrationContext<T, P, R> {
+public class IntegrationContext<T, P> {
 
     private final T request;
 
     @Setter
     private P mappedPayload;
 
-    @Setter
-    private R response;
-
-    private final IntegrationConnector<T, P, R> connector;
+    private final IntegrationConnector<T, P> connector;
 
     private final IntegrationConfiguration configuration;
 
@@ -33,7 +29,7 @@ public class IntegrationContext<T, P, R> {
 
     public IntegrationContext(
             T request,
-            IntegrationConnector<T, P, R> connector,
+            IntegrationConnector<T, P> connector,
             IntegrationConfiguration configuration) {
 
         this.request = request;
@@ -93,11 +89,8 @@ public class IntegrationContext<T, P, R> {
         return mappedPayload;
     }
 
-    public R getResponse() {
-        return response;
-    }
 
-    public IntegrationConnector<T, P, R> getConnector() {
+    public IntegrationConnector<T, P> getConnector() {
         return connector;
     }
 

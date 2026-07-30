@@ -10,7 +10,7 @@ import br.com.marhasoft.integrationhub.core.validation.ValidationResult;
 import br.com.marhasoft.integrationhub.modules.frotas.TceFrotasClient;
 import br.com.marhasoft.integrationhub.modules.frotas.veiculo.model.VeiculoBatchRequest;
 import br.com.marhasoft.integrationhub.modules.frotas.veiculo.model.VeiculoPayload;
-import br.com.marhasoft.integrationhub.modules.frotas.veiculo.model.VeiculoResponse;
+import br.com.marhasoft.integrationhub.modules.frotas.veiculo.validation.VeiculoValidationCode;
 import br.com.marhasoft.integrationhub.modules.frotas.veiculo.validation.VeiculoValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -19,8 +19,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class VeiculoConnector implements IntegrationConnector<
         VeiculoBatchRequest,
-        VeiculoPayload,
-        VeiculoResponse> {
+        VeiculoPayload> {
 
     private static final ConnectorMetadata METADATA =
             new ConnectorMetadata(
@@ -45,7 +44,7 @@ public class VeiculoConnector implements IntegrationConnector<
      */
     @Override
     public ValidationResult validate(IntegrationContext<VeiculoBatchRequest,
-                    VeiculoPayload, VeiculoResponse> context) {
+                    VeiculoPayload> context) {
         return validateVeiculos(
                 context.getRequest(),
                 context);
@@ -57,8 +56,7 @@ public class VeiculoConnector implements IntegrationConnector<
      */
     @Override
     public void map(
-            IntegrationContext<VeiculoBatchRequest, VeiculoPayload,
-                    VeiculoResponse> context) {
+            IntegrationContext<VeiculoBatchRequest, VeiculoPayload> context) {
 
         context.setMappedPayload(
                 mapper.toPayload(
@@ -70,23 +68,33 @@ public class VeiculoConnector implements IntegrationConnector<
      * Envia o payload ao sistema externo e registra a resposta da integração.
      */
     @Override
-    public void send(IntegrationContext<VeiculoBatchRequest, VeiculoPayload,
-                    VeiculoResponse> context) {
-
-        context.setResponse(
+    public void send(IntegrationContext<VeiculoBatchRequest, VeiculoPayload> context) {
+        context.getResult().merge(
                 client.cadastrarVeiculo(
                         context.getMappedPayload()));
+
+        if (context.getResult().hasError(
+                VeiculoValidationCode.VEICULO_PROPRIETARIO_CADASTRADO)) {
+
+            // proprietarioConnector.execute(...);
+
+            context.getResult().clear();
+
+            context.getResult().merge(
+                    client.cadastrarVeiculo(
+                            context.getMappedPayload()));
+        }
     }
 
     /**
      * Executa as validações de negócio para todos os veículos do lote.
      */
     private ValidationResult validateVeiculos(VeiculoBatchRequest request,
-            IntegrationContext<?, ?, ?> context) {
+            IntegrationContext<?, ?> context) {
 
         ValidationResult result = ValidationResult.valid();
 
-        request.getElementos() // ou getVeiculos(), conforme sua classe
+        request.getElementos()
                 .forEach(veiculo ->
                         result.merge(
                                 validator.validate(

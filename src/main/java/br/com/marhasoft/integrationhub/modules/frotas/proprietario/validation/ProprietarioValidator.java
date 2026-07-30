@@ -12,7 +12,7 @@ public class ProprietarioValidator {
 
     public ValidationResult validate(
             ProprietarioRequest request,
-            IntegrationContext<?, ?, ?> context) {
+            IntegrationContext<?, ?> context) {
 
         return ValidationResult.valid();
     }

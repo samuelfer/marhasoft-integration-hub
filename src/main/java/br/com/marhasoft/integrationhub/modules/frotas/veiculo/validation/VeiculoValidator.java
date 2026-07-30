@@ -14,7 +14,7 @@ public class VeiculoValidator {
 
     public ValidationResult validate(
             VeiculoRequest request,
-            IntegrationContext<?, ?, ?> context) {
+            IntegrationContext<?, ?> context) {
 
         ValidationResult result = ValidationResult.valid();
 
@@ -24,7 +24,7 @@ public class VeiculoValidator {
     }
 
     private void validarProprietarioUnidadeGestora(
-            VeiculoRequest request, IntegrationContext<?, ?, ?> context,
+            VeiculoRequest request, IntegrationContext<?, ?> context,
             ValidationResult result) {
 
         if (!"1".equals(request.getTipoFrota())) {
