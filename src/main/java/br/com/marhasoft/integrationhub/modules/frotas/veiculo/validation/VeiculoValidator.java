@@ -23,29 +23,25 @@ public class VeiculoValidator {
         return result;
     }
 
-
-
     private void validarProprietarioUnidadeGestora(
-            VeiculoRequest request,
-            IntegrationContext<?, ?, ?> context,
+            VeiculoRequest request, IntegrationContext<?, ?, ?> context,
             ValidationResult result) {
 
         if (!"1".equals(request.getTipoFrota())) {
             return;
         }
 
-        String cnpjUG =
-                context.getAttribute(
-                        "cnpjUnidadeGestora",
-                        String.class);
+        String cnpjUG = context.getConfiguration()
+                .getOrganization()
+                .getCnpj();
 
-        if (!Objects.equals(
-                request.getCpfCnpjProprietario(),
-                cnpjUG)) {
-
+        if (!Objects.equals(request.getCpfCnpjProprietario(), cnpjUG)) {
             result.addError(
                     VeiculoValidationCode.VEICULO_PROPRIO_CNPJ_UNIDADE_GESTORA,
-                    "Nos veículos próprios o proprietário deve ser a Unidade Gestora.");
+                    String.format(
+                            "Veículo de placa %s: nos veículos próprios o proprietário deve ser a Unidade Gestora.",
+                            request.getPlaca()
+                    ));
         }
     }
 

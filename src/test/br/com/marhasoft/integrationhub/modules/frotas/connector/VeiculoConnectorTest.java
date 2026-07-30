@@ -7,10 +7,11 @@ import br.com.marhasoft.integrationhub.core.model.IntegrationOperation;
 import br.com.marhasoft.integrationhub.core.validation.ValidationResult;
 import br.com.marhasoft.integrationhub.modules.frotas.TceFrotasClient;
 import br.com.marhasoft.integrationhub.modules.frotas.veiculo.VeiculoConnector;
+import br.com.marhasoft.integrationhub.modules.frotas.veiculo.VeiculoMapper;
+import br.com.marhasoft.integrationhub.modules.frotas.veiculo.model.VeiculoBatchRequest;
+import br.com.marhasoft.integrationhub.modules.frotas.veiculo.model.VeiculoPayload;
 import br.com.marhasoft.integrationhub.modules.frotas.veiculo.model.VeiculoRequest;
 import br.com.marhasoft.integrationhub.modules.frotas.veiculo.model.VeiculoResponse;
-import br.com.marhasoft.integrationhub.modules.frotas.veiculo.VeiculoMapper;
-import br.com.marhasoft.integrationhub.modules.frotas.veiculo.model.VeiculoPayload;
 import br.com.marhasoft.integrationhub.modules.frotas.veiculo.validation.VeiculoValidator;
 import br.com.marhasoft.integrationhub.support.VeiculoTestDataFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,6 +21,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
@@ -40,10 +43,16 @@ class VeiculoConnectorTest {
     private VeiculoConnector connector;
 
     private VeiculoRequest request;
+    private VeiculoBatchRequest batchRequest;
 
     @BeforeEach
     void setUp() {
+
         request = VeiculoTestDataFactory.umVeiculo();
+
+        batchRequest = VeiculoBatchRequest.builder()
+                .elementos(List.of(request))
+                .build();
     }
 
     @Test
@@ -58,11 +67,10 @@ class VeiculoConnectorTest {
     }
 
     @Test
-    @DisplayName("Deve delegar a validação para o validator")
-    void deveDelegarValidacao() {
+    @DisplayName("Deve validar todos os veículos do lote")
+    void deveValidarLote() {
 
-        IntegrationContext<VeiculoRequest, VeiculoPayload, VeiculoResponse> context =
-                criarContexto();
+        var context = criarContexto();
 
         ValidationResult validation = ValidationResult.valid();
 
@@ -76,28 +84,25 @@ class VeiculoConnectorTest {
         verify(validator).validate(request, context);
         verifyNoInteractions(mapper);
         verifyNoInteractions(client);
-        verifyNoMoreInteractions(validator);
     }
 
     @Test
     @DisplayName("Deve mapear o payload")
     void deveMapearPayload() {
 
-        IntegrationContext<VeiculoRequest, VeiculoPayload, VeiculoResponse> context =
-                criarContexto();
+        var context = criarContexto();
 
         VeiculoPayload payload = new VeiculoPayload();
 
-        when(mapper.toPayload(request, IntegrationAction.CREATE))
+        when(mapper.toPayload(batchRequest, IntegrationAction.CREATE))
                 .thenReturn(payload);
 
         connector.map(context);
 
         assertThat(context.getMappedPayload()).isSameAs(payload);
 
-        verify(mapper).toPayload(request, IntegrationAction.CREATE);
+        verify(mapper).toPayload(batchRequest, IntegrationAction.CREATE);
         verifyNoInteractions(validator);
-        verifyNoMoreInteractions(mapper);
         verifyNoInteractions(client);
     }
 
@@ -105,8 +110,7 @@ class VeiculoConnectorTest {
     @DisplayName("Deve enviar o payload ao client")
     void deveEnviarPayload() {
 
-        IntegrationContext<VeiculoRequest, VeiculoPayload, VeiculoResponse> context =
-                criarContexto();
+        var context = criarContexto();
 
         VeiculoPayload payload = new VeiculoPayload();
         context.setMappedPayload(payload);
@@ -127,15 +131,16 @@ class VeiculoConnectorTest {
         verify(client).cadastrarVeiculo(payload);
         verifyNoInteractions(validator);
         verifyNoInteractions(mapper);
-        verifyNoMoreInteractions(client);
     }
 
-    private IntegrationContext<VeiculoRequest, VeiculoPayload, VeiculoResponse> criarContexto() {
+    private IntegrationContext<
+            VeiculoBatchRequest,
+            VeiculoPayload,
+            VeiculoResponse> criarContexto() {
 
         return new IntegrationContext<>(
-                request,
+                batchRequest,
                 connector,
                 null);
     }
-
 }

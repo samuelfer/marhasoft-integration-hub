@@ -1,6 +1,7 @@
 package br.com.marhasoft.integrationhub.core.result;
 
 import br.com.marhasoft.integrationhub.core.validation.ValidationError;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,6 +13,7 @@ public class IntegrationResult {
 
     private final List<IntegrationMessage> messages = new ArrayList<>();
 
+    @JsonIgnore
     private Exception exception;
 
     public IntegrationStatus getStatus() {

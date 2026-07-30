@@ -16,7 +16,6 @@ public class VeiculoService {
 
     public IntegrationResult create(VeiculoBatchRequest request,
                                     IntegrationConfiguration configuration) {
-
         return executor.execute(connector, request, configuration);
     }
 }

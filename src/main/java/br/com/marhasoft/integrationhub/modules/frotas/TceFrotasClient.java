@@ -15,6 +15,8 @@ public class TceFrotasClient {
      */
     public VeiculoResponse cadastrarVeiculo(VeiculoPayload payload) {
 
+        System.out.println("VeiculoPayload enviado para o TCE: " + payload);
+
         return VeiculoResponse.builder()
                 .sucesso(true)
                 .mensagem("Integração realizada com sucesso.")

@@ -46,7 +46,6 @@ public class VeiculoConnector implements IntegrationConnector<
     @Override
     public ValidationResult validate(IntegrationContext<VeiculoBatchRequest,
                     VeiculoPayload, VeiculoResponse> context) {
-
         return validateVeiculos(
                 context.getRequest(),
                 context);

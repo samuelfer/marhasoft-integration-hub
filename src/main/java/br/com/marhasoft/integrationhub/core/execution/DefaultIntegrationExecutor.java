@@ -75,7 +75,6 @@ public class DefaultIntegrationExecutor
                         (List<PipelineStep<T, P, R>>) (List<?>) steps);
 
         pipeline.execute(context);
-
         return context.getResult();
     }
 }

@@ -3,9 +3,9 @@ package br.com.marhasoft.integrationhub.core.pipeline;
 import br.com.marhasoft.integrationhub.core.context.IntegrationContext;
 import br.com.marhasoft.integrationhub.core.validation.BeanValidationService;
 import br.com.marhasoft.integrationhub.core.validation.ValidationResult;
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Validator;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ValidationStep<T, P, R> extends AbstractPipelineStep<T, P, R> {
 
     private final BeanValidationService beanValidationService;
@@ -25,7 +25,6 @@ public class ValidationStep<T, P, R> extends AbstractPipelineStep<T, P, R> {
      */
     @Override
     protected void doExecute(IntegrationContext<T, P, R> context) {
-
         ValidationResult validation =
                 beanValidationService.validate(context.getRequest());
 
@@ -40,14 +39,5 @@ public class ValidationStep<T, P, R> extends AbstractPipelineStep<T, P, R> {
         validation.merge(connectorValidation);
 
         context.getResult().addErrors(validation.getErrors());
-    }
-
-    private void validarBean(T request, ValidationResult result) {
-
-        for (ConstraintViolation<T> violation : validator.validate(request)) {
-            result.addError(
-                    violation.getPropertyPath().toString(),
-                    violation.getMessage());
-        }
     }
 }
