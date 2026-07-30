@@ -1,4 +1,4 @@
-package br.com.marhasoft.integrationhub.modules.frotas.veiculo.model;
+package br.com.marhasoft.integrationhub.modules.frotas.proprietario.model;
 
 import br.com.marhasoft.integrationhub.core.model.BatchRequest;
 import jakarta.validation.Valid;
@@ -10,11 +10,11 @@ import java.util.List;
 
 @Getter
 @Builder
-public class VeiculoBatchRequest implements BatchRequest<VeiculoRequest> {
+public class ProprietarioBatchRequest implements BatchRequest<ProprietarioRequest> {
 
-    @NotEmpty(message = "É necessário informar pelo menos um veículo.")
+    @NotEmpty(message = "É necessário informar pelo menos um proprietário.")
     @Valid
-    private List<VeiculoRequest> elementos;
+    private List<ProprietarioRequest> elementos;
 
     private Boolean processamentoAssincrono;
 

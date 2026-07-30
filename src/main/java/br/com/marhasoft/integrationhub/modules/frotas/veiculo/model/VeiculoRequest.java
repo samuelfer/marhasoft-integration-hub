@@ -1,5 +1,6 @@
 package br.com.marhasoft.integrationhub.modules.frotas.veiculo.model;
 
+import br.com.marhasoft.integrationhub.core.model.Identificavel;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
@@ -9,7 +10,12 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class VeiculoRequest {
+public class VeiculoRequest implements Identificavel {
+
+    @Override
+    public String getIdentificador() {
+        return "Veículo de placa " + placa;
+    }
 
     @NotBlank(message = "A placa é obrigatória.")
     @Pattern(

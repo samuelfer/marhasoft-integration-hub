@@ -1,15 +1,21 @@
 package br.com.marhasoft.integrationhub.exception;
 
+import br.com.marhasoft.integrationhub.core.model.BatchRequest;
+import br.com.marhasoft.integrationhub.core.model.Identificavel;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.lang.reflect.Method;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -61,9 +67,7 @@ public class GlobalExceptionHandler {
         List<String> errors = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()
-                .map(error -> String.format("%s: %s",
-                        error.getField(),
-                        error.getDefaultMessage()))
+                .map(error -> formatError(error, ex))
                 .toList();
 
         ApiError error = ApiError.builder()
@@ -94,5 +98,43 @@ public class GlobalExceptionHandler {
                 .build();
 
         return ResponseEntity.internalServerError().body(error);
+    }
+
+    private String formatError(
+            FieldError error,
+            MethodArgumentNotValidException ex) {
+
+        Object target = ex.getBindingResult().getTarget();
+
+        if (!(target instanceof BatchRequest<?> batch)) {
+            return defaultMessage(error);
+        }
+
+        Matcher matcher = Pattern.compile("elementos\\[(\\d+)]")
+                .matcher(error.getField());
+
+        if (!matcher.find()) {
+            return defaultMessage(error);
+        }
+
+        int index = Integer.parseInt(matcher.group(1));
+
+        if (index >= batch.getElementos().size()) {
+            return defaultMessage(error);
+        }
+
+        Object elemento = batch.getElementos().get(index);
+
+        if (elemento instanceof Identificavel identificavel) {
+            return identificavel.getIdentificador() + ": " + error.getDefaultMessage();
+        }
+
+        return defaultMessage(error);
+    }
+
+    private String defaultMessage(FieldError error) {
+        return String.format("%s: %s",
+                error.getField(),
+                error.getDefaultMessage());
     }
 }
