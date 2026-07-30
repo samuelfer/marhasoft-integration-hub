@@ -7,6 +7,7 @@ import br.com.marhasoft.integrationhub.core.model.IntegrationAction;
 import br.com.marhasoft.integrationhub.core.model.IntegrationModule;
 import br.com.marhasoft.integrationhub.core.model.IntegrationOperation;
 import br.com.marhasoft.integrationhub.core.validation.ValidationResult;
+import br.com.marhasoft.integrationhub.modules.frotas.TceFrotasClient;
 import br.com.marhasoft.integrationhub.modules.frotas.veiculo.model.VeiculoRequest;
 import br.com.marhasoft.integrationhub.modules.frotas.veiculo.model.VeiculoResponse;
 import br.com.marhasoft.integrationhub.modules.frotas.veiculo.model.VeiculoPayload;

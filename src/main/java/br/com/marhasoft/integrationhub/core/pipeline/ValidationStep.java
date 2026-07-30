@@ -1,10 +1,18 @@
 package br.com.marhasoft.integrationhub.core.pipeline;
 
 import br.com.marhasoft.integrationhub.core.context.IntegrationContext;
-import br.com.marhasoft.integrationhub.core.validation.ValidationError;
+import br.com.marhasoft.integrationhub.core.validation.BeanValidationService;
 import br.com.marhasoft.integrationhub.core.validation.ValidationResult;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validator;
 
 public class ValidationStep<T, P, R> extends AbstractPipelineStep<T, P, R> {
+
+    private final BeanValidationService beanValidationService;
+
+    public ValidationStep(BeanValidationService beanValidationService) {
+        this.beanValidationService = beanValidationService;
+    }
 
     @Override
     public PipelinePhase phase() {
@@ -18,13 +26,28 @@ public class ValidationStep<T, P, R> extends AbstractPipelineStep<T, P, R> {
     @Override
     protected void doExecute(IntegrationContext<T, P, R> context) {
 
-        ValidationResult validation = context.getConnector().validate(context);
+        ValidationResult validation =
+                beanValidationService.validate(context.getRequest());
 
-        if (validation == null) {
+        ValidationResult connectorValidation =
+                context.getConnector().validate(context);
+
+        if (connectorValidation == null) {
             throw new IllegalStateException(
                     "O conector retornou um ValidationResult nulo.");
         }
 
+        validation.merge(connectorValidation);
+
         context.getResult().addErrors(validation.getErrors());
+    }
+
+    private void validarBean(T request, ValidationResult result) {
+
+        for (ConstraintViolation<T> violation : validator.validate(request)) {
+            result.addError(
+                    violation.getPropertyPath().toString(),
+                    violation.getMessage());
+        }
     }
 }
