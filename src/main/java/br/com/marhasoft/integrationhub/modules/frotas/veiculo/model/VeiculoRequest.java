@@ -3,6 +3,7 @@ package br.com.marhasoft.integrationhub.modules.frotas.veiculo.model;
 import br.com.marhasoft.integrationhub.core.model.Identificavel;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 @Getter
@@ -59,8 +60,16 @@ public class VeiculoRequest implements Identificavel {
             message = "O CPF/CNPJ do proprietário deve conter 11 ou 14 dígitos.")
     private String cpfCnpjProprietario;
 
+    @Size(min = 10, max = 150, message = "O nome do proprietário deve possuir entre 10 e 150 caracteres.")
+    @Pattern(regexp = ".*\\S.*", message = "O nome do proprietário deve conter ao menos um caractere diferente de espaço.")
+    private String nomeProprietario;
+
     @Pattern(
             regexp = "^(\\d{11}|\\d{14})$",
             message = "O CPF/CNPJ do locador deve conter 11 ou 14 dígitos.")
     private String cpfCnpjLocador;
+
+    @Size(min = 10, max = 150, message = "O nome do locador deve possuir entre 10 e 150 caracteres.")
+    @Pattern(regexp = ".*\\S.*", message = "O nome do locador deve conter ao menos um caractere diferente de espaço.")
+    private String nomeLocador;
 }
