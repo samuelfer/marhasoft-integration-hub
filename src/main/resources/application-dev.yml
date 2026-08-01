@@ -1,0 +1,45 @@
+spring:
+  application:
+    name: integration-hub
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/integrationhub
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+server:
+  port: 8080
+
+logging:
+  level:
+    root: INFO
+    br.com.marhasoft: DEBUG
+
+marhasoft:
+  oauth:
+    enabled: true
+    server-url: http://localhost:9999
+    default-client: diligencia
+    clients:
+      diligencia:
+        id: diligencia
+        secret: kmL0l7GSlaEfpKZCc3FTDKrOeSA6A9t8GjNYAsuSrja0KEhGBPrzStnVvkKojQheJp6TiaUW8tAT7pglc5IFMruaYIRHAEHAbzNZpa6jxLndUOgv05eRCCmQXcE7ojnbTFlpOHaJ4dysS331xTzJC2hNOXMvBt5wOKcOwKkePHuEewEHWMxT1wUzmO8PW7K9GZVzawGEhXYFfMMK6Oaj4Dnrq5MTfu9ulECYe0OhsCibWUZEQeZvDhdK3MaZ4Xi3
+
+      memorando:
+        id: sisrh
+        secret: erfftqmyZtB0dUvGcgYLwXyeOWGnZxbd4mp1HXPKEgEYzFQcNvDfKsujOYy6d5TeIoXlajCOwfiXTf9dd17Sg5i7eOGgVokEMFaZuqvHW36HWgZbbmUPKzZzpjTTqgxTcE1ohDJdm5GbiRN6CCMpMhv52OPYS4JqpRvyrbRSZdM7mMyNJ5T79Ckgd98pOfh7BzNjaNDWOu97fEALStmEK0KooN4TBdY7sp2W9nFrFnqk8Y2oce8QqGXUQ5MS
