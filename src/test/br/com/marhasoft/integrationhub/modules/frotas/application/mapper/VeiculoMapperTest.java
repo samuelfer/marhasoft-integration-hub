@@ -1,6 +1,7 @@
 package br.com.marhasoft.integrationhub.modules.frotas.application.mapper;
 
 import br.com.marhasoft.integrationhub.core.model.IntegrationAction;
+import br.com.marhasoft.integrationhub.modules.frotas.veiculo.model.VeiculoBatchRequest;
 import br.com.marhasoft.integrationhub.modules.frotas.veiculo.model.VeiculoRequest;
 import br.com.marhasoft.integrationhub.modules.frotas.veiculo.VeiculoMapper;
 import br.com.marhasoft.integrationhub.modules.frotas.veiculo.model.VeiculoItemPayload;
@@ -13,6 +14,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -33,7 +35,10 @@ class VeiculoMapperTest {
 
         VeiculoRequest request = VeiculoTestDataFactory.umVeiculo();
 
-        VeiculoPayload payload = mapper.toPayload(request, ACTION);
+        VeiculoBatchRequest batch = VeiculoBatchRequest.builder()
+                .elementos(List.of(request))
+                .build();
+        VeiculoPayload payload = mapper.toPayload(batch, ACTION);
 
         assertThat(payload).isNotNull();
         assertThat(payload.getElementos())
@@ -56,8 +61,13 @@ class VeiculoMapperTest {
 
         LocalDateTime antes = LocalDateTime.now();
 
-        VeiculoPayload payload =
-                mapper.toPayload(VeiculoTestDataFactory.umVeiculo(), ACTION);
+        VeiculoRequest request = VeiculoTestDataFactory.umVeiculo();
+
+        VeiculoBatchRequest batch = VeiculoBatchRequest.builder()
+                .elementos(List.of(request))
+                .build();
+
+        VeiculoPayload payload = mapper.toPayload(batch, ACTION);
 
         LocalDateTime depois = LocalDateTime.now();
 
@@ -73,7 +83,11 @@ class VeiculoMapperTest {
         VeiculoRequest request = VeiculoTestDataFactory.umVeiculo();
         request.setCpfCnpjLocador(null);
 
-        VeiculoPayload payload = mapper.toPayload(request, ACTION);
+        VeiculoBatchRequest batch = VeiculoBatchRequest.builder()
+                .elementos(List.of(request))
+                .build();
+
+        VeiculoPayload payload = mapper.toPayload(batch, ACTION);
 
         assertThat(payload.getElementos())
                 .singleElement()
@@ -86,8 +100,13 @@ class VeiculoMapperTest {
     @DisplayName("Deve mapear corretamente todas as ações")
     void deveMapearTodasAsActions(IntegrationAction action) {
 
-        VeiculoPayload payload =
-                mapper.toPayload(VeiculoTestDataFactory.umVeiculo(), action);
+        VeiculoRequest request = VeiculoTestDataFactory.umVeiculo();
+
+        VeiculoBatchRequest batch = VeiculoBatchRequest.builder()
+                .elementos(List.of(request))
+                .build();
+
+        VeiculoPayload payload = mapper.toPayload(batch, ACTION);
 
         assertThat(payload.getElementos())
                 .singleElement()
