@@ -2,7 +2,10 @@ package br.com.marhasoft.integrationhub.exception;
 
 import br.com.marhasoft.integrationhub.core.model.BatchRequest;
 import br.com.marhasoft.integrationhub.core.model.Identificavel;
+import br.com.marhasoft.oauth.client.exception.OAuthClientException;
 import jakarta.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -10,8 +13,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
-import java.lang.reflect.Method;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -19,6 +22,10 @@ import java.util.regex.Pattern;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    private static final Logger log =
+            LoggerFactory.getLogger(OAuthClientException.class);
+
 
     @ExceptionHandler(MissingRequestHeaderException.class)
     public ResponseEntity<ApiError> handleMissingHeader(
@@ -82,13 +89,49 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(error);
     }
 
+    @ExceptionHandler(OAuthClientException.class)
+    public ResponseEntity<ApiError> handleOAuthClientException(
+            OAuthClientException ex,
+            HttpServletRequest request) {
+
+        ApiError error = ApiError.builder()
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.BAD_GATEWAY.value())
+                .code(ErrorCode.OAUTH_AUTHENTICATION_ERROR.getCode())
+                .message(ex.getMessage())
+                .path(request.getRequestURI())
+                .build();
+
+        log.error("Erro ao obter Access Token do Authorization Server.", ex);
+
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_GATEWAY)
+                .body(error);
+    }
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<ApiError> handleNoResourceFound(
+            NoResourceFoundException ex,
+            HttpServletRequest request) {
+
+        ApiError error = ApiError.builder()
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.NOT_FOUND.value())
+                .code("MIH-404")
+                .message("O recurso solicitado não foi encontrado.")
+                .path(request.getRequestURI())
+                .build();
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(error);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiError> handleException(
             Exception ex,
             HttpServletRequest request) {
-        System.out.println(
-                "Erro inesperado: " + ex.getMessage() + " - " + request.getRequestURI()
-        );
+
         ApiError error = ApiError.builder()
                 .timestamp(LocalDateTime.now())
                 .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
@@ -99,7 +142,6 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.internalServerError().body(error);
     }
-
     private String formatError(
             FieldError error,
             MethodArgumentNotValidException ex) {
