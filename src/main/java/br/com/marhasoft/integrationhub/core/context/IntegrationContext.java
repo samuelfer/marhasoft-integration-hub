@@ -37,6 +37,10 @@ public class IntegrationContext<T, P> {
         this.configuration = configuration;
     }
 
+    public <R> R getRequest(Class<R> type) {
+        return type.cast(request);
+    }
+
     public ConnectorMetadata getMetadata() {
         return connector.getMetadata();
     }
