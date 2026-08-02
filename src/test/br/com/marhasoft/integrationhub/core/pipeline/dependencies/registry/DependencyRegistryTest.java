@@ -13,6 +13,7 @@ import org.mockito.InOrder;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 class DependencyRegistryTest {
@@ -39,8 +40,6 @@ class DependencyRegistryTest {
 
         registry.resolve(context);
 
-        verify(resolver).supports(context);
-        verify(resolver).resolve(context);
         verify(resolver).getDependencyKey();
         verify(resolver).getOrder();
         verify(resolver).supports(context);
@@ -57,15 +56,13 @@ class DependencyRegistryTest {
         DependencyRegistry registry =
                 new DependencyRegistry(List.of(resolver));
 
-        IntegrationContext<String, Object, Object> context =
+        IntegrationContext<String, Object> context =
                 mockContext();
 
         when(resolver.supports(context)).thenReturn(false);
 
         registry.resolve(context);
 
-        verify(resolver).supports(context);
-        verify(resolver, never()).resolve(any());
         verify(resolver).getDependencyKey();
         verify(resolver).getOrder();
         verify(resolver).supports(context);
@@ -129,7 +126,7 @@ class DependencyRegistryTest {
         DependencyRegistry registry =
                 new DependencyRegistry(List.of(resolver));
 
-        IntegrationContext<String, Object, Object> context =
+        IntegrationContext<String, Object> context =
                 mockContext();
 
         registry.resolve(context);
@@ -137,6 +134,63 @@ class DependencyRegistryTest {
         verify(resolver).getDependencyKey();
         verify(resolver).getOrder();
         verifyNoMoreInteractions(resolver);
+    }
+
+    @Test
+    @DisplayName("Deve interromper a resolução quando um resolver lançar exceção")
+    void deveInterromperResolucaoQuandoResolverFalhar() {
+
+        DependencyResolver<String, Object> resolver1 = mockResolver(1);
+        DependencyResolver<String, Object> resolver2 = mockResolver(2);
+
+        DependencyRegistry registry =
+                new DependencyRegistry(List.of(resolver1, resolver2));
+
+        IntegrationContext<String, Object> context =
+                mockContext();
+
+        when(resolver1.supports(context)).thenReturn(true);
+
+        doThrow(new IllegalStateException("Erro"))
+                .when(resolver1)
+                .resolve(context);
+
+        assertThatThrownBy(() -> registry.resolve(context))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("Erro");
+
+        verify(resolver1).supports(context);
+        verify(resolver1).resolve(context);
+
+        verify(resolver2, never()).supports(any());
+        verify(resolver2, never()).resolve(any());
+    }
+
+    @Test
+    @DisplayName("Deve manter a ordem de registro quando a prioridade for igual")
+    void deveManterOrdemQuandoPrioridadeIgual() {
+
+        DependencyResolver<String, Object> resolver1 = mockResolver(1);
+        DependencyResolver<String, Object> resolver2 = mockResolver(1);
+
+        DependencyRegistry registry =
+                new DependencyRegistry(List.of(resolver1, resolver2));
+
+        IntegrationContext<String, Object> context =
+                mockContext();
+
+        when(resolver1.supports(context)).thenReturn(true);
+        when(resolver2.supports(context)).thenReturn(true);
+
+        registry.resolve(context);
+
+        InOrder inOrder = inOrder(resolver1, resolver2);
+
+        inOrder.verify(resolver1).supports(context);
+        inOrder.verify(resolver1).resolve(context);
+
+        inOrder.verify(resolver2).supports(context);
+        inOrder.verify(resolver2).resolve(context);
     }
 
     @SuppressWarnings("unchecked")
@@ -152,13 +206,14 @@ class DependencyRegistryTest {
     }
 
     @SuppressWarnings("unchecked")
-    private IntegrationContext<String, Object, Object> mockContext() {
+    private IntegrationContext<String, Object> mockContext() {
 
-        IntegrationContext<String, Object, Object> context =
+        IntegrationContext<String, Object> context =
                 mock(IntegrationContext.class);
 
         when(context.getDependencyKey()).thenReturn(KEY);
 
         return context;
     }
+
 }

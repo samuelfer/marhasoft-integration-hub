@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -59,7 +60,7 @@ class VeiculoMapperTest {
     @DisplayName("Deve preencher o timestamp")
     void devePreencherTimestamp() {
 
-        LocalDateTime antes = LocalDateTime.now();
+        LocalDate antes = LocalDate.now();
 
         VeiculoRequest request = VeiculoTestDataFactory.umVeiculo();
 
@@ -73,7 +74,7 @@ class VeiculoMapperTest {
 
         assertThat(payload.getTimestamp())
                 .isNotNull()
-                .isBetween(antes, depois);
+                .isBetween(antes.atStartOfDay(), depois);
     }
 
     @Test
@@ -106,7 +107,7 @@ class VeiculoMapperTest {
                 .elementos(List.of(request))
                 .build();
 
-        VeiculoPayload payload = mapper.toPayload(batch, ACTION);
+        VeiculoPayload payload = mapper.toPayload(batch, action);
 
         assertThat(payload.getElementos())
                 .singleElement()
