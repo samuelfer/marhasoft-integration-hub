@@ -88,7 +88,7 @@ public class MaquinaConnector implements IntegrationConnector<
     public void send(IntegrationContext<MaquinaBatchRequest, MaquinaPayload> context) {
 
         IntegrationResult result =
-                client.cadastrarVeiculo(context.getMappedPayload());
+                client.cadastrarMaquina(context.getMappedPayload());
 
         boolean reenviarVeiculo = false;
 
