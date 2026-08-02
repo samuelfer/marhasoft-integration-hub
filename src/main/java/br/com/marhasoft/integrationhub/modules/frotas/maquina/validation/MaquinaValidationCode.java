@@ -1,0 +1,17 @@
+package br.com.marhasoft.integrationhub.modules.frotas.maquina.validation;
+
+public enum MaquinaValidationCode {
+
+    MAQUINA_DUPLICIDADE_NAO_PERMITIDA,
+
+    MAQUINA_PROPRIETARIO_LOCADOR_MUDANCA,
+
+    MAQUINA_PROPRIO_CNPJ_UNIDADE_GESTORA,
+
+    MAQUINA_PROPRIETARIO_CADASTRADO,
+
+    MAQUINA_LOCADOR_CADASTRADO,
+
+    MAQUINA_TIPO_FROTA_VALIDO
+
+}
