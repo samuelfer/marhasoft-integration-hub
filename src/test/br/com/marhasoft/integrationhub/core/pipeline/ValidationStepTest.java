@@ -12,7 +12,7 @@ import static org.mockito.Mockito.*;
 
 class ValidationStepTest {
 
-    private final ValidationStep<String, Object, Object> step =
+    private final ValidationStep<String, Object> step =
             new ValidationStep<>();
 
     @SuppressWarnings("unchecked")
@@ -29,10 +29,10 @@ class ValidationStepTest {
     @DisplayName("Deve adicionar os erros da validação ao contexto")
     void deveAdicionarErrosAoContexto() {
 
-        IntegrationConnector<String, Object, Object> connector =
+        IntegrationConnector<String, Object> connector =
                 mock(IntegrationConnector.class);
 
-        IntegrationContext<String, Object, Object> context =
+        IntegrationContext<String, Object> context =
                 new IntegrationContext<>(
                         "request",
                         connector,
@@ -68,10 +68,10 @@ class ValidationStepTest {
     @DisplayName("Não deve adicionar erros quando a validação for válida")
     void naoDeveAdicionarErrosQuandoValidacaoValida() {
 
-        IntegrationConnector<String, Object, Object> connector =
+        IntegrationConnector<String, Object> connector =
                 mock(IntegrationConnector.class);
 
-        IntegrationContext<String, Object, Object> context =
+        IntegrationContext<String, Object> context =
                 new IntegrationContext<>(
                         "request",
                         connector,
@@ -97,10 +97,10 @@ class ValidationStepTest {
     @DisplayName("Deve lançar exceção quando o connector retornar ValidationResult nulo")
     void deveLancarExcecaoQuandoValidationResultForNulo() {
 
-        IntegrationConnector<String, Object, Object> connector =
+        IntegrationConnector<String, Object> connector =
                 mock(IntegrationConnector.class);
 
-        IntegrationContext<String, Object, Object> context =
+        IntegrationContext<String, Object> context =
                 new IntegrationContext<>(
                         "request",
                         connector,

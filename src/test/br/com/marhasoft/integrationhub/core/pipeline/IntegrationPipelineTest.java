@@ -18,21 +18,21 @@ class IntegrationPipelineTest {
     @DisplayName("Deve executar todas as etapas na ordem correta")
     void deveExecutarTodasEtapasNaOrdemCorreta() {
 
-        PipelineStep<String, Object, Object> validation = mock(PipelineStep.class);
-        PipelineStep<String, Object, Object> mapping = mock(PipelineStep.class);
-        PipelineStep<String, Object, Object> transport = mock(PipelineStep.class);
+        PipelineStep<String, Object> validation = mock(PipelineStep.class);
+        PipelineStep<String, Object> mapping = mock(PipelineStep.class);
+        PipelineStep<String, Object> transport = mock(PipelineStep.class);
 
         when(validation.phase()).thenReturn(PipelinePhase.VALIDATION);
         when(mapping.phase()).thenReturn(PipelinePhase.MAPPING);
         when(transport.phase()).thenReturn(PipelinePhase.TRANSPORT);
 
-        IntegrationPipeline<String, Object, Object> pipeline =
+        IntegrationPipeline<String, Object> pipeline =
                 new IntegrationPipeline<>(List.of(
                         transport,
                         mapping,
                         validation));
 
-        IntegrationContext<String, Object, Object> context =
+        IntegrationContext<String, Object> context =
                 mock(IntegrationContext.class, RETURNS_DEEP_STUBS);
 
         when(context.getResult().hasErrors()).thenReturn(false);
@@ -54,21 +54,21 @@ class IntegrationPipelineTest {
     @DisplayName("Deve interromper a execução quando houver erro")
     void deveInterromperExecucaoQuandoHouverErro() {
 
-        PipelineStep<String, Object, Object> validation = mock(PipelineStep.class);
-        PipelineStep<String, Object, Object> mapping = mock(PipelineStep.class);
-        PipelineStep<String, Object, Object> transport = mock(PipelineStep.class);
+        PipelineStep<String, Object> validation = mock(PipelineStep.class);
+        PipelineStep<String, Object> mapping = mock(PipelineStep.class);
+        PipelineStep<String, Object> transport = mock(PipelineStep.class);
 
         when(validation.phase()).thenReturn(PipelinePhase.VALIDATION);
         when(mapping.phase()).thenReturn(PipelinePhase.MAPPING);
         when(transport.phase()).thenReturn(PipelinePhase.TRANSPORT);
 
-        IntegrationPipeline<String, Object, Object> pipeline =
+        IntegrationPipeline<String, Object> pipeline =
                 new IntegrationPipeline<>(List.of(
                         validation,
                         mapping,
                         transport));
 
-        IntegrationContext<String, Object, Object> context =
+        IntegrationContext<String, Object> context =
                 mock(IntegrationContext.class, RETURNS_DEEP_STUBS);
 
         when(context.getResult().hasErrors())
@@ -90,20 +90,20 @@ class IntegrationPipelineTest {
     @DisplayName("Deve retornar o mesmo contexto")
     void deveRetornarMesmoContexto() {
 
-        PipelineStep<String, Object, Object> step = mock(PipelineStep.class);
+        PipelineStep<String, Object> step = mock(PipelineStep.class);
 
         when(step.phase()).thenReturn(PipelinePhase.VALIDATION);
 
-        IntegrationPipeline<String, Object, Object> pipeline =
+        IntegrationPipeline<String, Object> pipeline =
                 new IntegrationPipeline<>(List.of(step));
 
-        IntegrationContext<String, Object, Object> context =
+        IntegrationContext<String, Object> context =
                 mock(IntegrationContext.class, RETURNS_DEEP_STUBS);
 
         when(context.getResult().hasErrors())
                 .thenReturn(false);
 
-        IntegrationContext<String, Object, Object> result =
+        IntegrationContext<String, Object> result =
                 pipeline.execute(context);
 
         assertThat(result).isSameAs(context);

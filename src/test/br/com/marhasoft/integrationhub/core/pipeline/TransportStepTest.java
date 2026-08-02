@@ -10,7 +10,7 @@ import static org.mockito.Mockito.*;
 
 class TransportStepTest {
 
-    private final TransportStep<String, Object, Object> step =
+    private final TransportStep<String, Object> step =
             new TransportStep<>();
 
     @Test
@@ -26,10 +26,10 @@ class TransportStepTest {
     @DisplayName("Deve delegar o envio para o connector")
     void deveDelegarEnvioParaConnector() {
 
-        IntegrationConnector<String, Object, Object> connector =
+        IntegrationConnector<String, Object> connector =
                 mock(IntegrationConnector.class);
 
-        IntegrationContext<String, Object, Object> context =
+        IntegrationContext<String, Object> context =
                 new IntegrationContext<>(
                         "request",
                         connector,

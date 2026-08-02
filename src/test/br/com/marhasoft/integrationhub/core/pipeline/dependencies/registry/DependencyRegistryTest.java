@@ -27,12 +27,12 @@ class DependencyRegistryTest {
     @DisplayName("Deve executar o resolver suportado")
     void deveExecutarResolverSuportado() {
 
-        DependencyResolver<String, Object, Object> resolver = mockResolver(1);
+        DependencyResolver<String, Object> resolver = mockResolver(1);
 
         DependencyRegistry registry =
                 new DependencyRegistry(List.of(resolver));
 
-        IntegrationContext<String, Object, Object> context =
+        IntegrationContext<String, Object> context =
                 mockContext();
 
         when(resolver.supports(context)).thenReturn(true);
@@ -52,7 +52,7 @@ class DependencyRegistryTest {
     @DisplayName("Não deve executar resolver que não suporta o contexto")
     void naoDeveExecutarResolverNaoSuportado() {
 
-        DependencyResolver<String, Object, Object> resolver = mockResolver(1);
+        DependencyResolver<String, Object> resolver = mockResolver(1);
 
         DependencyRegistry registry =
                 new DependencyRegistry(List.of(resolver));
@@ -77,13 +77,13 @@ class DependencyRegistryTest {
     @DisplayName("Deve executar os resolvedores na ordem configurada")
     void deveExecutarResolversNaOrdem() {
 
-        DependencyResolver<String, Object, Object> resolver1 = mockResolver(2);
-        DependencyResolver<String, Object, Object> resolver2 = mockResolver(1);
+        DependencyResolver<String, Object> resolver1 = mockResolver(2);
+        DependencyResolver<String, Object> resolver2 = mockResolver(1);
 
         DependencyRegistry registry =
                 new DependencyRegistry(List.of(resolver1, resolver2));
 
-        IntegrationContext<String, Object, Object> context =
+        IntegrationContext<String, Object> context =
                 mockContext();
 
         when(resolver1.supports(context)).thenReturn(true);
@@ -107,7 +107,7 @@ class DependencyRegistryTest {
         DependencyRegistry registry =
                 new DependencyRegistry(List.of());
 
-        IntegrationContext<String, Object, Object> context =
+        IntegrationContext<String, Object> context =
                 mockContext();
 
         registry.resolve(context);
@@ -117,7 +117,7 @@ class DependencyRegistryTest {
     @DisplayName("Deve ignorar resolvedores registrados para outra chave")
     void deveIgnorarResolversDeOutraChave() {
 
-        DependencyResolver<String, Object, Object> resolver =
+        DependencyResolver<String, Object> resolver =
                 mock(DependencyResolver.class);
 
         when(resolver.getDependencyKey())
@@ -140,9 +140,9 @@ class DependencyRegistryTest {
     }
 
     @SuppressWarnings("unchecked")
-    private DependencyResolver<String, Object, Object> mockResolver(int order) {
+    private DependencyResolver<String, Object> mockResolver(int order) {
 
-        DependencyResolver<String, Object, Object> resolver =
+        DependencyResolver<String, Object> resolver =
                 mock(DependencyResolver.class);
 
         when(resolver.getDependencyKey()).thenReturn(KEY);

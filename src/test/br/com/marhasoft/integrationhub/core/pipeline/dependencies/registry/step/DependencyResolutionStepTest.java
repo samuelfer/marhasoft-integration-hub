@@ -21,7 +21,7 @@ class DependencyResolutionStepTest {
     private DependencyRegistry dependencyRegistry;
 
     @InjectMocks
-    private DependencyResolutionStep<String, Object, Object> step;
+    private DependencyResolutionStep<String, Object> step;
 
     @SuppressWarnings("unchecked")
     @Test
@@ -37,7 +37,7 @@ class DependencyResolutionStepTest {
     @DisplayName("Deve delegar a resolução das dependências para o registry")
     void deveDelegarResolucaoDependencias() {
 
-        IntegrationContext<String, Object, Object> context =
+        IntegrationContext<String, Object> context =
                 mock(IntegrationContext.class);
 
         step.execute(context);

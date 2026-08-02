@@ -10,7 +10,7 @@ import static org.mockito.Mockito.*;
 
 class MappingStepTest {
 
-    private final MappingStep<String, Object, Object> step =
+    private final MappingStep<String, Object> step =
             new MappingStep<>();
 
     @Test
@@ -26,10 +26,10 @@ class MappingStepTest {
     @DisplayName("Deve delegar o mapeamento para o connector")
     void deveDelegarMapeamentoParaConnector() {
 
-        IntegrationConnector<String, Object, Object> connector =
+        IntegrationConnector<String, Object> connector =
                 mock(IntegrationConnector.class);
 
-        IntegrationContext<String, Object, Object> context =
+        IntegrationContext<String, Object> context =
                 new IntegrationContext<>(
                         "request",
                         connector,
