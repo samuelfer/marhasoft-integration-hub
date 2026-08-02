@@ -138,7 +138,7 @@ class VeiculoValidatorTest {
 
         VeiculoRequest request = VeiculoTestDataFactory.umVeiculo();
 
-        IntegrationContext<?, ?, ?> context = new IntegrationContext<>(null, null, null);
+        IntegrationContext<?, ?> context = new IntegrationContext<>(null, null, null);
         context.putAttribute("cnpjUnidadeGestora", "99999999999999");
 
         ValidationResult result = validator.validate(request, context);
@@ -146,9 +146,9 @@ class VeiculoValidatorTest {
         assertErro(result, VeiculoValidationCode.VEICULO_PROPRIO_CNPJ_UNIDADE_GESTORA);
     }
 
-    private IntegrationContext<?, ?, ?> criarContextoValido(VeiculoRequest request) {
+    private IntegrationContext<?, ?> criarContextoValido(VeiculoRequest request) {
 
-        IntegrationContext<?, ?, ?> context =
+        IntegrationContext<?, ?> context =
                 new IntegrationContext<>(null, null, null);
 
         context.putAttribute(
