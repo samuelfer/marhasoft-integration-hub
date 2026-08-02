@@ -2,9 +2,11 @@ package br.com.marhasoft.integrationhub.modules.frotas;
 
 import br.com.marhasoft.integrationhub.core.result.IntegrationResult;
 import br.com.marhasoft.integrationhub.core.result.IntegrationStatus;
+import br.com.marhasoft.integrationhub.modules.frotas.abastecimento.model.AbastecimentoPayload;
 import br.com.marhasoft.integrationhub.modules.frotas.locador.model.LocadorPayload;
-import br.com.marhasoft.integrationhub.modules.frotas.locador.validation.LocadorValidationCode;
+import br.com.marhasoft.integrationhub.modules.frotas.maquina.model.MaquinaPayload;
 import br.com.marhasoft.integrationhub.modules.frotas.proprietario.model.ProprietarioPayload;
+import br.com.marhasoft.integrationhub.modules.frotas.situacaofrota.model.SituacaoFrotaPayload;
 import br.com.marhasoft.integrationhub.modules.frotas.veiculo.model.VeiculoPayload;
 import br.com.marhasoft.integrationhub.modules.frotas.veiculo.validation.VeiculoValidationCode;
 import org.springframework.stereotype.Component;
@@ -67,4 +69,29 @@ public class TceFrotasClient {
 //        return result;
     }
 
+    public IntegrationResult cadastrarAbastecimento(AbastecimentoPayload mappedPayload) {
+
+        IntegrationResult result = new IntegrationResult();
+
+        result.setStatus(IntegrationStatus.ERROR);
+
+        return result;
+    }
+
+    public IntegrationResult cadastrarSituacaoFrota(SituacaoFrotaPayload mappedPayload) {
+
+        IntegrationResult result = new IntegrationResult();
+
+        result.setStatus(IntegrationStatus.ERROR);
+
+        return result;
+    }
+
+    public IntegrationResult cadastrarMaquina(MaquinaPayload mappedPayload) {
+        IntegrationResult result = new IntegrationResult();
+
+        result.setStatus(IntegrationStatus.ERROR);
+
+        return result;
+    }
 }
