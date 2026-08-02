@@ -44,8 +44,7 @@ public class MaquinaValidator {
 
         long quantidade = batch.getElementos()
                 .stream()
-                .filter(item ->
-                        Objects.equals(item.getCodigo(), request.getCodigo()))
+                .filter(item -> mesmaChaveUnicidade(item, request))
                 .count();
 
         if (quantidade > 1) {
@@ -95,6 +94,22 @@ public class MaquinaValidator {
                             "Na máquina %s, sendo do tipo próprio, o proprietário deve ser a Unidade Gestora.",
                             request.getCodigo()));
         }
+    }
+
+    /**
+     * Verifica se duas máquinas possuem a mesma chave de unicidade.
+     */
+    private boolean mesmaChaveUnicidade(
+            MaquinaRequest veiculo1,
+            MaquinaRequest veiculo2) {
+
+        return Objects.equals(veiculo1.getCodigo(), veiculo2.getCodigo())
+               && Objects.equals(veiculo1.getAnoFabricacao(), veiculo2.getAnoFabricacao())
+               && Objects.equals(veiculo1.getCpfCnpjProprietario(), veiculo2.getCpfCnpjProprietario())
+               && Objects.equals(veiculo1.getCpfCnpjLocador(), veiculo2.getCpfCnpjLocador());
+
+        // TODO Adicionar o Código da Unidade Gestora quando este campo
+        // passar a ser informado pela API.
     }
 
 }
