@@ -40,7 +40,7 @@ import org.springframework.web.bind.annotation.*;
  * pelo Integration Hub.
  */
 @RestController
-@RequestMapping("/api/v1/frotas/veiculos")
+@RequestMapping("/api/v1/frotas/maquinas")
 @RequiredArgsConstructor
 public class MaquinaController {
 
