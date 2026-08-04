@@ -5,6 +5,7 @@ import br.com.marhasoft.integrationhub.core.result.IntegrationStatus;
 import br.com.marhasoft.integrationhub.modules.contabilidade.acao.model.AcaoPayload;
 import br.com.marhasoft.integrationhub.modules.contabilidade.atualizacaoorcamentaria.model.AtualizacaoOrcamentariaPayload;
 import br.com.marhasoft.integrationhub.modules.contabilidade.conciliacaobancaria.model.ConciliacaoBancariaPayload;
+import br.com.marhasoft.integrationhub.modules.contabilidade.contabancaria.model.ContaBancariaPayload;
 import br.com.marhasoft.integrationhub.modules.frotas.abastecimento.model.AbastecimentoPayload;
 import br.com.marhasoft.integrationhub.modules.frotas.locador.model.LocadorPayload;
 import br.com.marhasoft.integrationhub.modules.frotas.maquina.model.MaquinaPayload;
@@ -115,6 +116,14 @@ public class TceFrotasClient {
     }
 
     public IntegrationResult cadastrarConciliacaoBancaria(ConciliacaoBancariaPayload mappedPayload) {
+        IntegrationResult result = new IntegrationResult();
+
+        result.setStatus(IntegrationStatus.ERROR);
+
+        return result;
+    }
+
+    public IntegrationResult cadastrarContaBancaria(ContaBancariaPayload mappedPayload) {
         IntegrationResult result = new IntegrationResult();
 
         result.setStatus(IntegrationStatus.ERROR);
