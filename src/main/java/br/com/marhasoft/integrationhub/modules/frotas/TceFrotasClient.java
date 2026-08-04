@@ -3,6 +3,7 @@ package br.com.marhasoft.integrationhub.modules.frotas;
 import br.com.marhasoft.integrationhub.core.result.IntegrationResult;
 import br.com.marhasoft.integrationhub.core.result.IntegrationStatus;
 import br.com.marhasoft.integrationhub.modules.contabilidade.acao.model.AcaoPayload;
+import br.com.marhasoft.integrationhub.modules.contabilidade.atualizacaoorcamentaria.model.AtualizacaoOrcamentariaPayload;
 import br.com.marhasoft.integrationhub.modules.frotas.abastecimento.model.AbastecimentoPayload;
 import br.com.marhasoft.integrationhub.modules.frotas.locador.model.LocadorPayload;
 import br.com.marhasoft.integrationhub.modules.frotas.maquina.model.MaquinaPayload;
@@ -97,6 +98,14 @@ public class TceFrotasClient {
     }
 
     public IntegrationResult cadastrarAcao(AcaoPayload mappedPayload) {
+        IntegrationResult result = new IntegrationResult();
+
+        result.setStatus(IntegrationStatus.ERROR);
+
+        return result;
+    }
+
+    public IntegrationResult cadastrarAtualizacaoOrcamentaria(AtualizacaoOrcamentariaPayload mappedPayload) {
         IntegrationResult result = new IntegrationResult();
 
         result.setStatus(IntegrationStatus.ERROR);
