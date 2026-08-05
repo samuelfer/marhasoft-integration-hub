@@ -38,17 +38,17 @@ marhasoft:
   oauth:
     enabled: true
     server-url: https://login-teste.tce.pb.gov.br
-    default-client: lagoa_de_dentro
+    default-client: teste
     clients:
-      lagoa_de_dentro:
-        id: "62_688_500314"
-        secret: ejAtmep0irtAVsE9Azzh7iv3n78xPLYqMifobIMfWNMHAuvEDrzYEg0sjrbpKxcF6oP07kgTzeX1tJbph4xqaVFDroUtU2S3M796PLYQ8tcPqRGeJXjoJzBSfcG742TpL0PWTxySUn9s50LD2WZJ5jrAyHZy8vsIF3SF5IuCdrpFf5t3sKQsCoSnA8E8Va42ruLKb5PwdY8Ws5ixQGqGLeNQqfdsrGaoOMJkuddyFvkmfxo6v2zQMZfW0HJv8M48
-      alcantil:
-        id: "46_591_500316"
-        secret: JzzXgw6yYMy8FvC0I0bCN78eeToWEoszMK37h5qKHOrOFWEM0iBk6M7lAn0hMM6M3JqJAMAGXPIjXn3H2d9wVGwu7LSYmOsMalKCwTqYzJwG9DJRT261IJjMEmZ5HpKGClr1fHDDBNSQ0GCzIB9NXGqbsdHpo1naSdLVtojpN8mLF9pPvYTRQzsa6jGIcE6Aj7WZZ8FrONEqqGOAECh4Nugvvpvta2h5gGTYzdBkmF86tpiqp3SUr2yGi1F1IugW
-#        id: "62_688_500314"
-#        secret: ejAtmep0irtAVsE9Azzh7iv3n78xPLYqMifobIMfWNMHAuvEDrzYEg0sjrbpKxcF6oP07kgTzeX1tJbph4xqaVFDroUtU2S3M796PLYQ8tcPqRGeJXjoJzBSfcG742TpL0PWTxySUn9s50LD2WZJ5jrAyHZy8vsIF3SF5IuCdrpFf5t3sKQsCoSnA8E8Va42ruLKb5PwdY8Ws5ixQGqGLeNQqfdsrGaoOMJkuddyFvkmfxo6v2zQMZfW0HJv8M48
+      teste:
+        id: ""
+        secret:
+      teste1:
+        id: ""
+        secret:
+#        id: ""
+#        secret:
 
-      memorando:
-        id: sisrh
-        secret: erfftqmyZtB0dUvGcgYLwXyeOWGnZxbd4mp1HXPKEgEYzFQcNvDfKsujOYy6d5TeIoXlajCOwfiXTf9dd17Sg5i7eOGgVokEMFaZuqvHW36HWgZbbmUPKzZzpjTTqgxTcE1ohDJdm5GbiRN6CCMpMhv52OPYS4JqpRvyrbRSZdM7mMyNJ5T79Ckgd98pOfh7BzNjaNDWOu97fEALStmEK0KooN4TBdY7sp2W9nFrFnqk8Y2oce8QqGXUQ5MS
+      teste2:
+        id: tata
+        secret:
