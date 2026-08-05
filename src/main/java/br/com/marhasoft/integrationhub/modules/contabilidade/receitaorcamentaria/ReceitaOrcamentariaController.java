@@ -65,7 +65,7 @@ public class ReceitaOrcamentariaController {
 
         IntegrationClient integrationClient =
                 IntegrationClient.builder()
-                        .client("lagoa_de_dentro")
+                        .client("alcantil")
                         .build();
 
         IntegrationConfiguration configuration =
