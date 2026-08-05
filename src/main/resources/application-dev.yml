@@ -30,15 +30,24 @@ logging:
     root: INFO
     br.com.marhasoft: DEBUG
 
+integrationhub:
+  sagres:
+    base-url: https://api-sagrescaptura-hml.tce.pb.gov.br
+
 marhasoft:
   oauth:
     enabled: true
-    server-url: http://localhost:9999
-    default-client: diligencia
+    server-url: https://login-teste.tce.pb.gov.br
+    default-client: lagoa_de_dentro
     clients:
-      diligencia:
-        id: diligencia
-        secret: kmL0l7GSlaEfpKZCc3FTDKrOeSA6A9t8GjNYAsuSrja0KEhGBPrzStnVvkKojQheJp6TiaUW8tAT7pglc5IFMruaYIRHAEHAbzNZpa6jxLndUOgv05eRCCmQXcE7ojnbTFlpOHaJ4dysS331xTzJC2hNOXMvBt5wOKcOwKkePHuEewEHWMxT1wUzmO8PW7K9GZVzawGEhXYFfMMK6Oaj4Dnrq5MTfu9ulECYe0OhsCibWUZEQeZvDhdK3MaZ4Xi3
+      lagoa_de_dentro:
+        id: "62_688_500314"
+        secret: ejAtmep0irtAVsE9Azzh7iv3n78xPLYqMifobIMfWNMHAuvEDrzYEg0sjrbpKxcF6oP07kgTzeX1tJbph4xqaVFDroUtU2S3M796PLYQ8tcPqRGeJXjoJzBSfcG742TpL0PWTxySUn9s50LD2WZJ5jrAyHZy8vsIF3SF5IuCdrpFf5t3sKQsCoSnA8E8Va42ruLKb5PwdY8Ws5ixQGqGLeNQqfdsrGaoOMJkuddyFvkmfxo6v2zQMZfW0HJv8M48
+      alcantil:
+        id: "46_591_500316"
+        secret: JzzXgw6yYMy8FvC0I0bCN78eeToWEoszMK37h5qKHOrOFWEM0iBk6M7lAn0hMM6M3JqJAMAGXPIjXn3H2d9wVGwu7LSYmOsMalKCwTqYzJwG9DJRT261IJjMEmZ5HpKGClr1fHDDBNSQ0GCzIB9NXGqbsdHpo1naSdLVtojpN8mLF9pPvYTRQzsa6jGIcE6Aj7WZZ8FrONEqqGOAECh4Nugvvpvta2h5gGTYzdBkmF86tpiqp3SUr2yGi1F1IugW
+#        id: "62_688_500314"
+#        secret: ejAtmep0irtAVsE9Azzh7iv3n78xPLYqMifobIMfWNMHAuvEDrzYEg0sjrbpKxcF6oP07kgTzeX1tJbph4xqaVFDroUtU2S3M796PLYQ8tcPqRGeJXjoJzBSfcG742TpL0PWTxySUn9s50LD2WZJ5jrAyHZy8vsIF3SF5IuCdrpFf5t3sKQsCoSnA8E8Va42ruLKb5PwdY8Ws5ixQGqGLeNQqfdsrGaoOMJkuddyFvkmfxo6v2zQMZfW0HJv8M48
 
       memorando:
         id: sisrh

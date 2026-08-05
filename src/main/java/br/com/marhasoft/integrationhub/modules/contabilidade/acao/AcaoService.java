@@ -16,6 +16,7 @@ public class AcaoService {
 
     public IntegrationResult create(AcaoBatchRequest request,
                                     IntegrationConfiguration configuration) {
-        return executor.execute(connector, request, configuration);
+//        return executor.execute(connector, request, configuration);
+        return null;
     }
 }

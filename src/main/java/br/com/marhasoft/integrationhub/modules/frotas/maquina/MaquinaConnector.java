@@ -18,12 +18,10 @@ import br.com.marhasoft.integrationhub.modules.frotas.maquina.model.MaquinaPaylo
 import br.com.marhasoft.integrationhub.modules.frotas.maquina.model.MaquinaRequest;
 import br.com.marhasoft.integrationhub.modules.frotas.maquina.validation.MaquinaValidator;
 import br.com.marhasoft.integrationhub.modules.frotas.proprietario.ProprietarioConnector;
-import br.com.marhasoft.integrationhub.modules.frotas.proprietario.model.ProprietarioBatchRequest;
 import br.com.marhasoft.integrationhub.modules.frotas.proprietario.model.ProprietarioRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 
 import static br.com.marhasoft.integrationhub.modules.frotas.maquina.validation.MaquinaValidationCode.MAQUINA_LOCADOR_CADASTRADO;
 import static br.com.marhasoft.integrationhub.modules.frotas.maquina.validation.MaquinaValidationCode.MAQUINA_PROPRIETARIO_CADASTRADO;
@@ -156,12 +154,13 @@ public class MaquinaConnector implements IntegrationConnector<
 //                .nome(veiculo.getNomeProprietario())
                 .build();
 
-        return executor.execute(
-                proprietarioConnector,
-                ProprietarioBatchRequest.builder()
-                        .elementos(List.of(request))
-                        .build(),
-                context.getConfiguration());
+//        return executor.execute(
+//                proprietarioConnector,
+//                ProprietarioBatchRequest.builder()
+//                        .elementos(List.of(request))
+//                        .build(),
+//                context.getConfiguration());
+        return null;
     }
 
     private IntegrationResult cadastrarLocador(
@@ -176,11 +175,12 @@ public class MaquinaConnector implements IntegrationConnector<
 //                .nome(maquina.ge())
                 .build();
 
-        return executor.execute(
-                locadorConnector,
-                LocadorBatchRequest.builder()
-                        .elementos(List.of(request))
-                        .build(),
-                context.getConfiguration());
+//        return executor.execute(
+//                locadorConnector,
+//                LocadorBatchRequest.builder()
+//                        .elementos(List.of(request))
+//                        .build(),
+//                context.getConfiguration());
+        return null;
     }
 }

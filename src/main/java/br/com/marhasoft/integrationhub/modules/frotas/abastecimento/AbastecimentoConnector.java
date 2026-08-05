@@ -17,7 +17,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 
-
 @Component
 @RequiredArgsConstructor
 public class AbastecimentoConnector implements IntegrationConnector<
@@ -90,11 +89,11 @@ public class AbastecimentoConnector implements IntegrationConnector<
         ValidationResult result = ValidationResult.valid();
 
         request.getElementos()
-                .forEach(veiculo ->
-                        result.merge(
-                                validator.validate(
-                                        veiculo,
-                                        context)));
+            .forEach(veiculo ->
+                    result.merge(
+                            validator.validate(
+                                    veiculo,
+                                    context)));
 
         return result;
     }

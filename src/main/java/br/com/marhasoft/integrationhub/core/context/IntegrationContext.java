@@ -1,5 +1,6 @@
 package br.com.marhasoft.integrationhub.core.context;
 
+import br.com.marhasoft.integrationhub.core.authentication.IntegrationClient;
 import br.com.marhasoft.integrationhub.core.configuration.EnvironmentType;
 import br.com.marhasoft.integrationhub.core.configuration.IntegrationConfiguration;
 import br.com.marhasoft.integrationhub.core.configuration.Organization;
@@ -7,6 +8,7 @@ import br.com.marhasoft.integrationhub.core.connector.IntegrationConnector;
 import br.com.marhasoft.integrationhub.core.dependencies.registry.DependencyKey;
 import br.com.marhasoft.integrationhub.core.metadata.ConnectorMetadata;
 import br.com.marhasoft.integrationhub.core.result.IntegrationResult;
+import br.com.marhasoft.integrationhub.core.tce.model.TceEnvio;
 import lombok.Setter;
 
 import java.util.HashMap;
@@ -18,6 +20,12 @@ public class IntegrationContext<T, P> {
 
     @Setter
     private P mappedPayload;
+
+    @Setter
+    private TceEnvio envio;
+
+    @Setter
+    private IntegrationClient authentication;
 
     private final IntegrationConnector<T, P> connector;
 
@@ -104,5 +112,13 @@ public class IntegrationContext<T, P> {
 
     public IntegrationResult getResult() {
         return result;
+    }
+
+    public TceEnvio getEnvio() {
+        return envio;
+    }
+
+    public IntegrationClient getAuthentication() {
+        return authentication;
     }
 }

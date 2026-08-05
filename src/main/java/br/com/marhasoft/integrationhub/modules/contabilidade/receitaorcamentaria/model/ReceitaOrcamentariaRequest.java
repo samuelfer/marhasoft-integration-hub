@@ -23,7 +23,7 @@ public class ReceitaOrcamentariaRequest implements Identificavel {
     }
 
     @NotBlank(message = "O número da receita é obrigatório.")
-    @Size(min = 8, max = 8,
+    @Size(min = 7, max = 7,
             message = "O número da receita deve conter 8 dígitos.")
     @Pattern(regexp = "\\d+",
             message = "O número da receita deve conter apenas números.")

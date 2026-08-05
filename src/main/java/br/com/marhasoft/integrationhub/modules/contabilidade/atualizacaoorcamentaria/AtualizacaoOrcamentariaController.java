@@ -44,7 +44,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class AtualizacaoOrcamentariaController {
 
-    private final AtualizacaoOrcamentariaService atualizacaoOrcamentariaService;
+//    private final AtualizacaoOrcamentariaService atualizacaoOrcamentariaService;
 
     @PostMapping
     public ResponseEntity<IntegrationResult> create(
@@ -68,14 +68,14 @@ public class AtualizacaoOrcamentariaController {
                         .exercicio(exercise)
                         .build();
 
-        IntegrationResult result =
-                atualizacaoOrcamentariaService.create(request, configuration);
+//        IntegrationResult result =
+//                atualizacaoOrcamentariaService.create(request, configuration);
+//
+//        if (result.hasErrors()) {
+//            return ResponseEntity.badRequest().body(result);
+//        }
 
-        if (result.hasErrors()) {
-            return ResponseEntity.badRequest().body(result);
-        }
-
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(null);
     }
 
     // TODO (Integração de Clientes):

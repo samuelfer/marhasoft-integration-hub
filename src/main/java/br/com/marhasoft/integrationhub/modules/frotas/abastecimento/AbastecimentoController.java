@@ -1,5 +1,6 @@
 package br.com.marhasoft.integrationhub.modules.frotas.abastecimento;
 
+import br.com.marhasoft.integrationhub.core.authentication.IntegrationClient;
 import br.com.marhasoft.integrationhub.core.configuration.EnvironmentType;
 import br.com.marhasoft.integrationhub.core.configuration.IntegrationConfiguration;
 import br.com.marhasoft.integrationhub.core.configuration.Organization;
@@ -54,6 +55,11 @@ public class AbastecimentoController {
 
         validateIntegrationKey(integrationKey);
 
+        IntegrationClient integrationClient =
+                IntegrationClient.builder()
+                        .client("lagoa_de_dentro")
+                        .build();
+
         // TODO (Integração de Clientes):
         // Atualmente a configuração da integração é montada utilizando valores
         // fixos para facilitar o desenvolvimento.
@@ -69,7 +75,7 @@ public class AbastecimentoController {
                         .build();
 
         IntegrationResult result =
-                abastecimentoService.create(request, configuration);
+                abastecimentoService.create(request, configuration, integrationClient);
 
         if (result.hasErrors()) {
             return ResponseEntity.badRequest().body(result);

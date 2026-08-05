@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- ============================================== -->
+    <!-- PROPRIEDADES                                   -->
+    <!-- ============================================== -->
+
+    <property name="LOG_PATH" value="logs"/>
+
+    <property name="PATTERN"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{50} - %msg%n"/>
+
+    <!-- ============================================== -->
+    <!-- CONSOLE                                        -->
+    <!-- ============================================== -->
+
+    <appender name="CONSOLE"
+              class="ch.qos.logback.core.ConsoleAppender">
+
+        <encoder>
+            <pattern>${PATTERN}</pattern>
+        </encoder>
+
+    </appender>
+
+    <!-- ============================================== -->
+    <!-- LOG GERAL DA APLICAÇÃO                         -->
+    <!-- ============================================== -->
+
+    <appender name="APPLICATION_FILE"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+        <file>${LOG_PATH}/application.log</file>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+
+            <fileNamePattern>
+                ${LOG_PATH}/application.%d{yyyy-MM-dd}.log
+            </fileNamePattern>
+
+            <maxHistory>30</maxHistory>
+
+            <totalSizeCap>2GB</totalSizeCap>
+
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>${PATTERN}</pattern>
+        </encoder>
+
+    </appender>
+
+    <!-- ============================================== -->
+    <!-- LOG DAS INTEGRAÇÕES                            -->
+    <!-- ============================================== -->
+
+    <appender name="INTEGRATION_FILE"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+        <file>${LOG_PATH}/integration-hub.log</file>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+
+            <fileNamePattern>
+                ${LOG_PATH}/integration-hub.%d{yyyy-MM-dd}.log
+            </fileNamePattern>
+
+            <maxHistory>60</maxHistory>
+
+            <totalSizeCap>5GB</totalSizeCap>
+
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>${PATTERN}</pattern>
+        </encoder>
+
+    </appender>
+
+    <!-- ============================================== -->
+    <!-- LOGGER DA INTEGRAÇÃO COM O SAGRES              -->
+    <!-- ============================================== -->
+
+    <logger name="br.com.marhasoft.integrationhub.core.integration.sagres"
+            level="DEBUG"
+            additivity="true">
+
+        <appender-ref ref="INTEGRATION_FILE"/>
+
+    </logger>
+
+    <!-- ============================================== -->
+    <!-- LOGGER RAIZ                                    -->
+    <!-- ============================================== -->
+
+    <root level="INFO">
+
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="APPLICATION_FILE"/>
+
+    </root>
+
+</configuration>

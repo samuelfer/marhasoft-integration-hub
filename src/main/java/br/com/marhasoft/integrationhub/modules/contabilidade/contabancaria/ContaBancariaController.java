@@ -44,7 +44,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class ContaBancariaController {
 
-    private final ContaBancariaService contaBancariaService;
+//    private final ContaBancariaService contaBancariaService;
 
     @PostMapping
     public ResponseEntity<IntegrationResult> create(
@@ -68,14 +68,14 @@ public class ContaBancariaController {
                         .exercicio(exercise)
                         .build();
 
-        IntegrationResult result =
-                contaBancariaService.create(request, configuration);
+//        IntegrationResult result =
+//                contaBancariaService.create(request, configuration);
+//
+//        if (result.hasErrors()) {
+//            return ResponseEntity.badRequest().body(result);
+//        }
 
-        if (result.hasErrors()) {
-            return ResponseEntity.badRequest().body(result);
-        }
-
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(null);
     }
 
     // TODO (Integração de Clientes):

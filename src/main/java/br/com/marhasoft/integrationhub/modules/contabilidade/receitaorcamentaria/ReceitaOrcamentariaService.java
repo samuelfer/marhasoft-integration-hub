@@ -1,5 +1,6 @@
 package br.com.marhasoft.integrationhub.modules.contabilidade.receitaorcamentaria;
 
+import br.com.marhasoft.integrationhub.core.authentication.IntegrationClient;
 import br.com.marhasoft.integrationhub.core.configuration.IntegrationConfiguration;
 import br.com.marhasoft.integrationhub.core.execution.IntegrationExecutor;
 import br.com.marhasoft.integrationhub.core.result.IntegrationResult;
@@ -15,7 +16,8 @@ public class ReceitaOrcamentariaService {
     private final IntegrationExecutor executor;
 
     public IntegrationResult create(ReceitaOrcamentariaBatchRequest request,
-                                    IntegrationConfiguration configuration) {
-        return executor.execute(connector, request, configuration);
+                                    IntegrationConfiguration configuration,
+                                    IntegrationClient integrationClient) {
+        return executor.execute(connector, request, configuration, integrationClient);
     }
 }

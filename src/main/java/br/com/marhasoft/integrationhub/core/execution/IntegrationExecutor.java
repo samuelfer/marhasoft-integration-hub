@@ -1,5 +1,6 @@
 package br.com.marhasoft.integrationhub.core.execution;
 
+import br.com.marhasoft.integrationhub.core.authentication.IntegrationClient;
 import br.com.marhasoft.integrationhub.core.configuration.IntegrationConfiguration;
 import br.com.marhasoft.integrationhub.core.connector.IntegrationConnector;
 import br.com.marhasoft.integrationhub.core.result.IntegrationResult;
@@ -51,6 +52,7 @@ public interface IntegrationExecutor {
     <T, P> IntegrationResult execute(
             IntegrationConnector<T, P> connector,
             T request,
-            IntegrationConfiguration configuration);
+            IntegrationConfiguration configuration,
+            IntegrationClient integrationClient);
 
 }

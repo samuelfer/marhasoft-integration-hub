@@ -1,5 +1,6 @@
 package br.com.marhasoft.integrationhub.modules.frotas.locador;
 
+import br.com.marhasoft.integrationhub.core.authentication.IntegrationClient;
 import br.com.marhasoft.integrationhub.core.configuration.EnvironmentType;
 import br.com.marhasoft.integrationhub.core.configuration.IntegrationConfiguration;
 import br.com.marhasoft.integrationhub.core.configuration.Organization;
@@ -54,10 +55,15 @@ public class LocadorController {
 
         validateIntegrationKey(integrationKey);
 
+        IntegrationClient integrationClient =
+                IntegrationClient.builder()
+                        .client("lagoa_de_dentro")
+                        .build();
+
+
         // TODO (Integração de Clientes):
         // Atualmente a configuração da integração é montada utilizando valores
         // fixos para facilitar o desenvolvimento.
-        //
         // Em uma implementação futura, a IntegrationConfiguration deverá ser
         // construída a partir das informações do cliente identificado pela
         // X-IntegrationHub-Key, consultando a base de dados do Integration Hub.
@@ -69,7 +75,7 @@ public class LocadorController {
                         .build();
 
         IntegrationResult result =
-                locadorService.create(request, configuration);
+                locadorService.create(request, configuration, integrationClient);
 
         if (result.hasErrors()) {
             return ResponseEntity.badRequest().body(result);

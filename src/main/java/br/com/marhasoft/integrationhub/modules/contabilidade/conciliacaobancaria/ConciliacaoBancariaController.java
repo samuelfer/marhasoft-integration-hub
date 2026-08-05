@@ -40,11 +40,11 @@ import org.springframework.web.bind.annotation.*;
  * pelo Integration Hub.
  */
 @RestController
-@RequestMapping("/api/v1/contabilidade/atualizao-orcamentaria")
+@RequestMapping("/api/v1/contabilidade/conciliacao-bancaria")
 @RequiredArgsConstructor
 public class ConciliacaoBancariaController {
 
-    private final ConciliacaoBancariaService conciliacaoBancariaService;
+//    private final ConciliacaoBancariaService conciliacaoBancariaService;
 
     @PostMapping
     public ResponseEntity<IntegrationResult> create(
@@ -68,14 +68,14 @@ public class ConciliacaoBancariaController {
                         .exercicio(exercise)
                         .build();
 
-        IntegrationResult result =
-                conciliacaoBancariaService.create(request, configuration);
+//        IntegrationResult result =
+//                conciliacaoBancariaService.create(request, configuration);
+//
+//        if (result.hasErrors()) {
+//            return ResponseEntity.badRequest().body(result);
+//        }
 
-        if (result.hasErrors()) {
-            return ResponseEntity.badRequest().body(result);
-        }
-
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(null);
     }
 
     // TODO (Integração de Clientes):

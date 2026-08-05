@@ -156,12 +156,13 @@ public class VeiculoConnector implements IntegrationConnector<
                 .nome(veiculo.getNomeProprietario())
                 .build();
 
-        return executor.execute(
-                proprietarioConnector,
-                ProprietarioBatchRequest.builder()
-                        .elementos(List.of(request))
-                        .build(),
-                context.getConfiguration());
+//        return executor.execute(
+//                proprietarioConnector,
+//                ProprietarioBatchRequest.builder()
+//                        .elementos(List.of(request))
+//                        .build(),
+//                context.getConfiguration());
+        return null;
     }
 
     private IntegrationResult cadastrarLocador(
@@ -176,11 +177,12 @@ public class VeiculoConnector implements IntegrationConnector<
                 .nome(veiculo.getNomeLocador())
                 .build();
 
-        return executor.execute(
-                locadorConnector,
-                LocadorBatchRequest.builder()
-                        .elementos(List.of(request))
-                        .build(),
-                context.getConfiguration());
+//        return executor.execute(
+//                locadorConnector,
+//                LocadorBatchRequest.builder()
+//                        .elementos(List.of(request))
+//                        .build(),
+//                context.getConfiguration());
+        return null;
     }
 }

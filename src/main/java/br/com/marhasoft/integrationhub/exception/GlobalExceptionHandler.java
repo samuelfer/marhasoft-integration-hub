@@ -39,7 +39,7 @@ public class GlobalExceptionHandler {
                 .message("O cabeçalho obrigatório '" + ex.getHeaderName() + "' não foi informado.")
                 .path(request.getRequestURI())
                 .build();
-
+        log.error("Erro  de cabeçalho obrigatório", ex);
         return ResponseEntity.badRequest().body(error);
     }
 
@@ -62,7 +62,7 @@ public class GlobalExceptionHandler {
                 .message(ex.getMessage())
                 .path(request.getRequestURI())
                 .build();
-
+        log.error("Erro  de integração", ex);
         return ResponseEntity.status(status).body(error);
     }
 
@@ -85,7 +85,7 @@ public class GlobalExceptionHandler {
                 .details(errors)
                 .path(request.getRequestURI())
                 .build();
-
+        log.error("Erro  de validação", ex);
         return ResponseEntity.badRequest().body(error);
     }
 
@@ -103,7 +103,6 @@ public class GlobalExceptionHandler {
                 .build();
 
         log.error("Erro ao obter Access Token do Authorization Server.", ex);
-
 
         return ResponseEntity
                 .status(HttpStatus.BAD_GATEWAY)
@@ -123,6 +122,8 @@ public class GlobalExceptionHandler {
                 .path(request.getRequestURI())
                 .build();
 
+        log.error("Recurso solicitado não encontrado", ex);
+
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(error);
     }
@@ -139,6 +140,8 @@ public class GlobalExceptionHandler {
                 .message("Ocorreu um erro interno inesperado.")
                 .path(request.getRequestURI())
                 .build();
+
+        log.error("Erro inesperado", ex);
 
         return ResponseEntity.internalServerError().body(error);
     }

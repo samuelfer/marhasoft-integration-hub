@@ -1,5 +1,6 @@
 package br.com.marhasoft.integrationhub.core.execution;
 
+import br.com.marhasoft.integrationhub.core.authentication.IntegrationClient;
 import br.com.marhasoft.integrationhub.core.configuration.IntegrationConfiguration;
 import br.com.marhasoft.integrationhub.core.connector.IntegrationConnector;
 import br.com.marhasoft.integrationhub.core.context.IntegrationContext;
@@ -56,18 +57,24 @@ public class DefaultIntegrationExecutor
     public <T, P> IntegrationResult execute(
             IntegrationConnector<T, P> connector,
             T request,
-            IntegrationConfiguration configuration) {
+            IntegrationConfiguration configuration,
+            IntegrationClient integrationClient) {
 
         Objects.requireNonNull(connector, "O connector é obrigatório.");
         Objects.requireNonNull(request, "A requisição é obrigatória.");
         Objects.requireNonNull(configuration,
                 "A configuração da integração é obrigatória.");
+        Objects.requireNonNull(
+                integrationClient,
+                "o cliente da integração é obrigatório.");
 
         IntegrationContext<T, P> context =
                 new IntegrationContext<>(
                         request,
                         connector,
                         configuration);
+
+        context.setAuthentication(integrationClient);
 
         IntegrationPipeline<T, P> pipeline =
                 new IntegrationPipeline<>(

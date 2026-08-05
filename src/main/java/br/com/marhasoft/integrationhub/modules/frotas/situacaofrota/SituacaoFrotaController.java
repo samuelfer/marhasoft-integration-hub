@@ -1,5 +1,6 @@
 package br.com.marhasoft.integrationhub.modules.frotas.situacaofrota;
 
+import br.com.marhasoft.integrationhub.core.authentication.IntegrationClient;
 import br.com.marhasoft.integrationhub.core.configuration.EnvironmentType;
 import br.com.marhasoft.integrationhub.core.configuration.IntegrationConfiguration;
 import br.com.marhasoft.integrationhub.core.configuration.Organization;
@@ -44,7 +45,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class SituacaoFrotaController {
 
-    private final SituacaoFrotaService veiculoService;
+    private final SituacaoFrotaService situacaoFrotaService;
 
     @PostMapping
     public ResponseEntity<IntegrationResult> create(
@@ -61,6 +62,12 @@ public class SituacaoFrotaController {
         // Em uma implementação futura, a IntegrationConfiguration deverá ser
         // construída a partir das informações do cliente identificado pela
         // X-IntegrationHub-Key, consultando a base de dados do Integration Hub.
+
+        IntegrationClient integrationClient =
+                IntegrationClient.builder()
+                        .client("lagoa_de_dentro")
+                        .build();
+
         IntegrationConfiguration configuration =
                 IntegrationConfiguration.builder()
                         .organization(temporaryOrganization())
@@ -69,7 +76,7 @@ public class SituacaoFrotaController {
                         .build();
 
         IntegrationResult result =
-                veiculoService.create(request, configuration);
+                situacaoFrotaService.create(request, configuration, integrationClient);
 
         if (result.hasErrors()) {
             return ResponseEntity.badRequest().body(result);

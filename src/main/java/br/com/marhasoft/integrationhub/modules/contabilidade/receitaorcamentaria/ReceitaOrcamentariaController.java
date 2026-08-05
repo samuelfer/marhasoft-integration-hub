@@ -1,5 +1,6 @@
 package br.com.marhasoft.integrationhub.modules.contabilidade.receitaorcamentaria;
 
+import br.com.marhasoft.integrationhub.core.authentication.IntegrationClient;
 import br.com.marhasoft.integrationhub.core.configuration.EnvironmentType;
 import br.com.marhasoft.integrationhub.core.configuration.IntegrationConfiguration;
 import br.com.marhasoft.integrationhub.core.configuration.Organization;
@@ -61,6 +62,12 @@ public class ReceitaOrcamentariaController {
         // Em uma implementação futura, a IntegrationConfiguration deverá ser
         // construída a partir das informações do cliente identificado pela
         // X-IntegrationHub-Key, consultando a base de dados do Integration Hub.
+
+        IntegrationClient integrationClient =
+                IntegrationClient.builder()
+                        .client("lagoa_de_dentro")
+                        .build();
+
         IntegrationConfiguration configuration =
                 IntegrationConfiguration.builder()
                         .organization(temporaryOrganization())
@@ -69,7 +76,7 @@ public class ReceitaOrcamentariaController {
                         .build();
 
         IntegrationResult result =
-                receitaOrcamentariaService.create(request, configuration);
+                receitaOrcamentariaService.create(request, configuration, integrationClient);
 
         if (result.hasErrors()) {
             return ResponseEntity.badRequest().body(result);
