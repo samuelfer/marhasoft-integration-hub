@@ -36,4 +36,9 @@ public class TceEnvio {
      * Protocolo do envio.
      */
     private String protocoloEnvio;
+
+    /**
+     * Chave validação do envio.
+     */
+    private String chaveValidacao;
 }

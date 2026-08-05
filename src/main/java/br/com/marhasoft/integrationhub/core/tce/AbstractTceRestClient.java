@@ -70,12 +70,11 @@ public abstract class AbstractTceRestClient {
         registrarSucesso(logContext, null);
     }
 
-    protected void registrarSucesso(SagresLogContext logContext, TceEnvioResponse response) {
+    protected void registrarSucesso(SagresLogContext logContext, Object  response) {
 
         logContext.setStatus(HttpStatus.OK.value());
         if (response != null) {
             logContext.setResponse(response);
-            logContext.setProtocolo(response.getProtocoloEnvio());
         } else {
             logContext.setProtocolo(logContext.getProtocolo());
         }

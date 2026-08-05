@@ -40,4 +40,10 @@ public class SagresUris {
                + "/"
                + competencia;
     }
+
+    public static String validacoes(String protocolo, String chaveValidacao) {
+        return envio(protocolo)
+               + "/validacoes?chaveValidacao="
+               + chaveValidacao;
+    }
 }

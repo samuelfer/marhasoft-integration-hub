@@ -6,6 +6,7 @@ import br.com.marhasoft.integrationhub.core.integration.sagres.SagresLogContext;
 import br.com.marhasoft.integrationhub.core.result.IntegrationResult;
 import br.com.marhasoft.integrationhub.core.tce.enums.TceStatusEnvioEnum;
 import br.com.marhasoft.integrationhub.core.tce.mapper.TceEnvioMapper;
+import br.com.marhasoft.integrationhub.core.tce.mapper.TceValidacaoMapper;
 import br.com.marhasoft.integrationhub.core.tce.model.*;
 import br.com.marhasoft.oauth.client.api.AccessTokenService;
 import org.springframework.http.HttpMethod;
@@ -30,15 +31,18 @@ import java.time.Month;
 public class TceEnvioClient extends AbstractTceRestClient {
 
     private final TceEnvioMapper mapper;
+    private final TceValidacaoMapper validacaoMapper;
 
     public TceEnvioClient(AccessTokenService accessTokenService,
             TceSagresProperties tceSagresProperties,
             TceErrorHandler errorHandler,
-            TceEnvioMapper mapper) {
+            TceEnvioMapper mapper,
+            TceValidacaoMapper validacaoMapper) {
 
         super(accessTokenService, tceSagresProperties, errorHandler);
 
         this.mapper = mapper;
+        this.validacaoMapper = validacaoMapper;
     }
 
     /**
@@ -77,7 +81,9 @@ public class TceEnvioClient extends AbstractTceRestClient {
 
         } catch (RestClientResponseException ex) {
 
-            return registrarErroECriarResultado(logContext, ex);
+            return TceEnvioResult.builder()
+                    .result(criarResultadoErro(logContext, ex))
+                    .build();
         }
     }
 
@@ -115,7 +121,9 @@ public class TceEnvioClient extends AbstractTceRestClient {
 
         } catch (RestClientResponseException ex) {
 
-            return registrarErroECriarResultado(logContext, ex);
+            return TceEnvioResult.builder()
+                    .result(criarResultadoErro(logContext, ex))
+                    .build();
         }
     }
 
@@ -159,7 +167,60 @@ public class TceEnvioClient extends AbstractTceRestClient {
 
         } catch (RestClientResponseException ex) {
 
-            return registrarErroECriarResultado(logContext, ex);
+            return TceEnvioResult.builder()
+                    .result(criarResultadoErro(logContext, ex))
+                    .build();
+        }
+    }
+
+    /**
+     * Consulta o resultado da validação de um protocolo de envio.
+     *
+     * <p>O SAGRES identifica cada validação por uma chave de validação,
+     * retornando o status da validação e os respectivos detalhes, como
+     * sumário e eventuais erros encontrados.</p>
+     *
+     * @param context contexto da integração
+     * @param protocoloEnvio protocolo do envio
+     * @param chaveValidacao chave da validação retornada pelo SAGRES
+     * @return resultado da consulta da validação
+     */
+    public TceValidacaoResult consultarValidacoes(IntegrationContext<?, ?> context,
+            String protocoloEnvio, String chaveValidacao) {
+
+        String uri = SagresUris.validacoes(
+                protocoloEnvio,
+                chaveValidacao);
+
+        SagresLogContext logContext = criarLogContext(
+                IntegrationOperationEnum.CONSULTAR_VALIDACOES,
+                HttpMethod.GET,
+                uri,
+                context,
+                null);
+
+        logContext.setProtocolo(protocoloEnvio);
+
+        registrarRequisicao(logContext);
+
+        try {
+
+            TceValidacaoResponse response =
+                    restClient(context)
+                            .get()
+                            .uri(uri)
+                            .retrieve()
+                            .body(TceValidacaoResponse.class);
+
+            registrarSucesso(logContext, response);
+
+            return criarResultadoSucesso(response);
+
+        } catch (RestClientResponseException ex) {
+
+            return TceValidacaoResult.builder()
+                    .result(criarResultadoErro(logContext, ex))
+                    .build();
         }
     }
 
@@ -233,17 +294,26 @@ public class TceEnvioClient extends AbstractTceRestClient {
                 .build();
     }
 
+
+    private TceValidacaoResult criarResultadoSucesso(
+            TceValidacaoResponse response) {
+
+        return TceValidacaoResult.builder()
+                .validacao(validacaoMapper.toModel(response))
+                .result(sucesso())
+                .build();
+    }
+
     /**
      * Registra o erro retornado pelo SAGRES e cria o resultado
-     * da integração correspondente.
+     * base da integração.
      */
-    private TceEnvioResult registrarErroECriarResultado(SagresLogContext logContext,
+    private IntegrationResult criarResultadoErro(
+            SagresLogContext logContext,
             RestClientResponseException ex) {
 
         registrarErro(logContext, ex);
 
-        return TceEnvioResult.builder()
-                .result(errorHandler.handle(ex))
-                .build();
+        return errorHandler.handle(ex);
     }
 }
