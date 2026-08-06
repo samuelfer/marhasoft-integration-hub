@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 public class SagresEnvioService {
 
-    private final SagresEnvioClient tceEnvioClient;
+    private final SagresEnvioClient sagresEnvioClient;
 
     public SagresEnvioResult consultarEnvioPorUnidadeGestoraTipoCompetencia(
             IntegrationConfiguration configuration,
@@ -31,7 +31,7 @@ public class SagresEnvioService {
 
         context.setAuthentication(integrationClient);
 
-        return tceEnvioClient.consultarEnvioPorUnidadeGestoraTipoCompetencia(
+        return sagresEnvioClient.consultarEnvioPorUnidadeGestoraTipoCompetencia(
                 context,
                 codigoUnidadeGestora,
                 tipoEnvio,
@@ -51,7 +51,23 @@ public class SagresEnvioService {
 
         context.setAuthentication(integrationClient);
 
-        return tceEnvioClient.consultarEnvioPorProtocolo(
+        return sagresEnvioClient.consultarEnvioPorProtocolo(
                 context, protocolo);
+    }
+
+    public SagresEnvioResult deletarProtocolo(
+            IntegrationConfiguration configuration,
+            IntegrationClient integrationClient,
+            String protocolo) {
+
+        IntegrationContext<Void, Void> context =
+                new IntegrationContext<>(
+                        null,
+                        null,
+                        configuration);
+
+        context.setAuthentication(integrationClient);
+
+        return sagresEnvioClient.deletarEnvioPorProtocolo(context, protocolo);
     }
 }

@@ -272,6 +272,46 @@ public class SagresEnvioClient extends AbstractTceRestClient {
         }
     }
 
+    /**
+     * Deletar um envio pelo protocolo e todos os dados associados.
+     */
+    public SagresEnvioResult deletarEnvioPorProtocolo(IntegrationContext<?, ?> context,
+                                                        String protocoloEnvio) {
+
+        String uri = SagresUris.envio(protocoloEnvio);
+
+        SagresLogContext logContext = criarLogContext(
+                IntegrationOperationEnum.DELETAR_ENVIO_PROTOCOLO,
+                HttpMethod.DELETE,
+                uri,
+                context,
+                null);
+
+        logContext.setProtocolo(protocoloEnvio);
+
+        registrarRequisicao(logContext);
+
+        try {
+
+            restClient(context)
+                    .delete()
+                    .uri(uri)
+                    .retrieve()
+                    .toBodilessEntity();
+
+            registrarSucesso(logContext, null);
+
+            return criarResultadoSucesso(logContext);
+
+        } catch (RestClientResponseException ex) {
+
+            return SagresEnvioResult.builder()
+                    .result(criarResultadoErro(logContext, ex))
+                    .build();
+        }
+    }
+
+
 
     /**
      * Cria o payload de abertura do protocolo.
@@ -312,6 +352,18 @@ public class SagresEnvioClient extends AbstractTceRestClient {
                 .build();
 
         registrarResultado(logContext, result.getResult());
+        return result;
+    }
+
+    private SagresEnvioResult criarResultadoSucesso(SagresLogContext logContext) {
+
+        SagresEnvioResult result =
+                SagresEnvioResult.builder()
+                        .result(sucesso())
+                        .build();
+
+        registrarResultado(logContext, result.getResult());
+
         return result;
     }
 

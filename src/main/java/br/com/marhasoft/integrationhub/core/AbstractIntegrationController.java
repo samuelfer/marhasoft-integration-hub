@@ -48,12 +48,12 @@ public abstract class AbstractIntegrationController {
     }
 
     protected IntegrationConfiguration configuration(
-            LocalDate exercicio) {
+            LocalDate competencia) {
 
         return IntegrationConfiguration.builder()
                 .organization(temporaryOrganization())
                 .environment(EnvironmentType.HOMOLOGATION)
-                .exercicio(exercicio)
+                .competencia(competencia)
                 .build();
     }
 

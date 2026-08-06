@@ -17,7 +17,7 @@ public class IntegrationConfiguration {
     private EnvironmentType environment = EnvironmentType.PRODUCTION;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    private LocalDate exercicio;
+    private LocalDate competencia;
 
     private String token;
 

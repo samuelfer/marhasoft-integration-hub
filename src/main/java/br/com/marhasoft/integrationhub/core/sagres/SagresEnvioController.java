@@ -71,4 +71,30 @@ public class SagresEnvioController extends AbstractIntegrationController {
 
         return ResponseEntity.ok(result);
     }
+
+    /**
+     * Deleta o envio identificado pelo protocolo
+     * e todos os dados associados a ele.
+     */
+    @DeleteMapping("/{protocolo}")
+    public ResponseEntity<?> deletar(
+            @RequestHeader("X-IntegrationHub-Key") String integrationKey,
+            @PathVariable String protocolo) {
+
+        validateIntegrationKey(integrationKey);
+        SagresFormatValidator.validateProtocoloEnvio(protocolo);
+
+        SagresEnvioResult result =
+                service.deletarProtocolo(
+                        configuration(),
+                        integrationClient(),
+                        protocolo);
+
+        if (result.getResult().hasErrors()) {
+            return ResponseEntity.badRequest()
+                    .body(result.getResult());
+        }
+
+        return ResponseEntity.ok(result);
+    }
 }

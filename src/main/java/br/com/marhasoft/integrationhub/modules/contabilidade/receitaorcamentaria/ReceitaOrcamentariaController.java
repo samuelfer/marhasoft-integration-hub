@@ -49,13 +49,13 @@ public class ReceitaOrcamentariaController extends AbstractIntegrationController
     @PostMapping
     public ResponseEntity<IntegrationResult> create(
             @RequestHeader("X-IntegrationHub-Key") String integrationKey,
-            @RequestHeader("X-Exercise") LocalDate exercicio,
+            @RequestHeader("X-Exercise") LocalDate competencia,
             @Valid @RequestBody ReceitaOrcamentariaBatchRequest request) {
 
         validateIntegrationKey(integrationKey);
 
         IntegrationResult result =
-                receitaOrcamentariaService.create(request, configuration(exercicio), integrationClient());
+                receitaOrcamentariaService.create(request, configuration(competencia), integrationClient());
 
         if (result.hasErrors()) {
             return ResponseEntity.badRequest().body(result);
