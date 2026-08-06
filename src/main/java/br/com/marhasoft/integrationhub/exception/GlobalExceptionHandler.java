@@ -9,10 +9,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.time.LocalDateTime;
@@ -40,6 +42,95 @@ public class GlobalExceptionHandler {
                 .path(request.getRequestURI())
                 .build();
         log.error("Erro  de cabeçalho obrigatório", ex);
+        return ResponseEntity.badRequest().body(error);
+    }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<ApiError> handleMethodNotSupported(
+            HttpRequestMethodNotSupportedException ex,
+            HttpServletRequest request) {
+
+        ApiError error = ApiError.builder()
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.METHOD_NOT_ALLOWED.value())
+                .code("MIH-004")
+                .message("Método HTTP não suportado.")
+                .details(List.of(ex.getMessage()))
+                .path(request.getRequestURI())
+                .build();
+
+        log.error("Método não suportado", ex);
+
+        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED)
+                .body(error);
+    }
+
+    @ExceptionHandler(InvalidIntegrationKeyException.class)
+    public ResponseEntity<ApiError> handleInvalidIntegrationKey(
+            InvalidIntegrationKeyException ex,
+            HttpServletRequest request) {
+
+        ApiError error =
+                ApiError.builder()
+                        .timestamp(LocalDateTime.now())
+                        .status(HttpStatus.BAD_REQUEST.value())
+                        .code("MIH-004")
+                        .message(ex.getMessage())
+                        .path(request.getRequestURI())
+                        .build();
+
+        log.error("Chave de integração inválida", ex);
+
+        return ResponseEntity.badRequest()
+                .body(error);
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ApiError> handleMethodArgumentTypeMismatch(
+            MethodArgumentTypeMismatchException ex,
+            HttpServletRequest request) {
+
+        String message = "O valor informado é inválido.";
+
+        if ("competencia".equals(ex.getName())) {
+
+            message = "O parâmetro 'competencia' deve estar no formato yyyy-MM-dd.";
+
+        } else if ("tipoEnvio".equals(ex.getName())) {
+
+            message = "O tipo de envio informado é inválido.";
+        }
+
+        ApiError error = ApiError.builder()
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .code("MIH-005")
+                .message("Erro de validação.")
+                .details(List.of(message))
+                .path(request.getRequestURI())
+                .build();
+
+        log.error("Formato do parâmetro é inválido.", ex);
+
+        return ResponseEntity.badRequest().body(error);
+    }
+
+    @ExceptionHandler(InvalidIntegrationProtocolException.class)
+    public ResponseEntity<ApiError> handleInvalidIntegrationProtocolException(
+            InvalidIntegrationProtocolException ex,
+            HttpServletRequest request) {
+
+        ApiError error = ApiError.builder()
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .code("MIH-005")
+                .message("Erro de validação.")
+                .details(List.of(ex.getMessage()))
+                .path(request.getRequestURI())
+                .build();
+
+        log.error("Protocolo de envio inválido.", ex);
+
         return ResponseEntity.badRequest().body(error);
     }
 

@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+
 
 /*
  * Arquitetura prevista:
@@ -50,7 +52,7 @@ public class SituacaoFrotaController {
     @PostMapping
     public ResponseEntity<IntegrationResult> create(
             @RequestHeader("X-IntegrationHub-Key") String integrationKey,
-            @RequestHeader("X-Exercise") Integer exercise,
+            @RequestHeader("X-Exercise") LocalDate exercicio,
             @Valid @RequestBody SituacaoFrotaBatchRequest request) {
 
         validateIntegrationKey(integrationKey);
@@ -72,7 +74,7 @@ public class SituacaoFrotaController {
                 IntegrationConfiguration.builder()
                         .organization(temporaryOrganization())
                         .environment(EnvironmentType.HOMOLOGATION)
-                        .exercicio(exercise)
+                        .exercicio(exercicio)
                         .build();
 
         IntegrationResult result =

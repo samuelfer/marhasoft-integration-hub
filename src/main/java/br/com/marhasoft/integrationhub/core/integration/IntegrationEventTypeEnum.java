@@ -6,6 +6,6 @@ public enum IntegrationEventTypeEnum {
 
     RESPONSE,
 
-    ERROR
+    RESULT, ERROR
 
 }

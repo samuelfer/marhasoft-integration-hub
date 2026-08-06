@@ -2,6 +2,7 @@ package br.com.marhasoft.integrationhub.core.integration.sagres;
 
 import br.com.marhasoft.integrationhub.core.context.IntegrationContext;
 import br.com.marhasoft.integrationhub.core.integration.IntegrationOperationEnum;
+import br.com.marhasoft.integrationhub.core.result.IntegrationResult;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.http.HttpMethod;
@@ -34,6 +35,8 @@ public class SagresLogContext {
     private Object response;
 
     private Integer status;
+
+    private IntegrationResult result;
 
     private Object error;
 

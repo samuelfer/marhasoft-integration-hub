@@ -82,11 +82,11 @@
     <!-- ============================================== -->
 
     <logger name="br.com.marhasoft.integrationhub.core.integration.sagres"
-            level="DEBUG"
-            additivity="true">
+            level="INFO"
+            additivity="false">
 
         <appender-ref ref="INTEGRATION_FILE"/>
-
+        <appender-ref ref="CONSOLE"/>
     </logger>
 
     <!-- ============================================== -->

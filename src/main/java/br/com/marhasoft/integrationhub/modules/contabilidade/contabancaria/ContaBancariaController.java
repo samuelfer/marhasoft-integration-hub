@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+
 
 /*
  * Arquitetura prevista:
@@ -49,7 +51,7 @@ public class ContaBancariaController {
     @PostMapping
     public ResponseEntity<IntegrationResult> create(
             @RequestHeader("X-IntegrationHub-Key") String integrationKey,
-            @RequestHeader("X-Exercise") Integer exercise,
+            @RequestHeader("X-Exercise") LocalDate exercicio,
             @Valid @RequestBody ContaBancariaBatchRequest request) {
 
         validateIntegrationKey(integrationKey);
@@ -65,7 +67,7 @@ public class ContaBancariaController {
                 IntegrationConfiguration.builder()
                         .organization(temporaryOrganization())
                         .environment(EnvironmentType.HOMOLOGATION)
-                        .exercicio(exercise)
+                        .exercicio(exercicio)
                         .build();
 
 //        IntegrationResult result =

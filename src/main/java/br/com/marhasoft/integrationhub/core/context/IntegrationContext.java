@@ -8,9 +8,10 @@ import br.com.marhasoft.integrationhub.core.connector.IntegrationConnector;
 import br.com.marhasoft.integrationhub.core.dependencies.registry.DependencyKey;
 import br.com.marhasoft.integrationhub.core.metadata.ConnectorMetadata;
 import br.com.marhasoft.integrationhub.core.result.IntegrationResult;
-import br.com.marhasoft.integrationhub.core.tce.model.TceEnvio;
+import br.com.marhasoft.integrationhub.core.sagres.model.SagresEnvio;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,7 +23,7 @@ public class IntegrationContext<T, P> {
     private P mappedPayload;
 
     @Setter
-    private TceEnvio envio;
+    private SagresEnvio envio;
 
     @Setter
     private IntegrationClient authentication;
@@ -57,7 +58,7 @@ public class IntegrationContext<T, P> {
         return configuration != null ? configuration.getOrganization() : null;
     }
 
-    public Integer getExercicio() {
+    public LocalDate getExercicio() {
         return configuration != null ? configuration.getExercicio() : null;
     }
 
@@ -114,7 +115,7 @@ public class IntegrationContext<T, P> {
         return result;
     }
 
-    public TceEnvio getEnvio() {
+    public SagresEnvio getEnvio() {
         return envio;
     }
 

@@ -5,6 +5,7 @@ import br.com.marhasoft.integrationhub.core.integration.IntegrationTypeEnum;
 import br.com.marhasoft.integrationhub.core.integration.JsonUtils;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.client.RestClientResponseException;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -27,6 +28,14 @@ public class SagresLogger {
     public void error(SagresLogContext context,  Throwable throwable) {
         log.error(JsonUtils.toJson(toIntegrationLog(
                 context, IntegrationEventTypeEnum.ERROR, throwable)));
+    }
+
+    public void result(SagresLogContext context) {
+        log.info(JsonUtils.toJson(
+                toIntegrationLog(
+                        context,
+                        IntegrationEventTypeEnum.RESULT,
+                        null)));
     }
 
     private IntegrationLog toIntegrationLog(
@@ -53,11 +62,24 @@ public class SagresLogger {
                 .request(context.getRequest())
                 .protocolo(context.getProtocolo())
                 .response(context.getResponse())
+                .result(context.getResult())
                 .error(context.getError())
                 .exception(
                         throwable != null ? throwable.getClass().getName() : null)
-                .message(
-                        throwable != null ? throwable.getMessage() : null)
+                .message(resolveMessage(throwable))
                 .build();
+    }
+
+    private String resolveMessage(Throwable throwable) {
+
+        if (throwable == null) {
+            return null;
+        }
+
+        if (throwable instanceof RestClientResponseException) {
+            return null;
+        }
+
+        return throwable.getMessage();
     }
 }

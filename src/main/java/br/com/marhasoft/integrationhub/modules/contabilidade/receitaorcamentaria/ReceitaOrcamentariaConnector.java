@@ -8,8 +8,8 @@ import br.com.marhasoft.integrationhub.core.model.IntegrationAction;
 import br.com.marhasoft.integrationhub.core.model.IntegrationModule;
 import br.com.marhasoft.integrationhub.core.model.IntegrationOperation;
 import br.com.marhasoft.integrationhub.core.result.IntegrationResult;
-import br.com.marhasoft.integrationhub.core.tce.*;
-import br.com.marhasoft.integrationhub.core.tce.model.*;
+import br.com.marhasoft.integrationhub.core.sagres.*;
+import br.com.marhasoft.integrationhub.core.sagres.model.*;
 import br.com.marhasoft.integrationhub.core.validation.ValidationResult;
 import br.com.marhasoft.integrationhub.modules.contabilidade.receitaorcamentaria.model.ReceitaOrcamentariaBatchRequest;
 import br.com.marhasoft.integrationhub.modules.contabilidade.receitaorcamentaria.model.ReceitaOrcamentariaPayload;
@@ -30,8 +30,8 @@ public class ReceitaOrcamentariaConnector implements IntegrationConnector<Receit
 
     private final ReceitaOrcamentariaMapper mapper;
     private final ReceitaOrcamentariaValidator validator;
-    private final TceContabilidadeClient client;
-    private final TceEnvioClient envioClient;
+    private final SagresContabilidadeClient client;
+    private final SagresEnvioClient envioClient;
 
     /**
      * Retorna os metadados que identificam esta integração.
@@ -84,7 +84,7 @@ public class ReceitaOrcamentariaConnector implements IntegrationConnector<Receit
          * Etapa 1
          * Solicita ao SAGRES a abertura de um protocolo de envio.
          */
-        TceEnvioResult envioResult = envioClient.criarEnvio(context, TipoEnvio.ORCAMENTO);
+        SagresEnvioResult envioResult = envioClient.criarEnvio(context, SagresTipoEnvio.ORCAMENTO);
 
         context.getResult().merge(envioResult.getResult());
 

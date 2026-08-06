@@ -1,5 +1,6 @@
 package br.com.marhasoft.integrationhub.core.integration.sagres;
 
+import br.com.marhasoft.integrationhub.core.result.IntegrationResult;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -46,6 +47,8 @@ public class IntegrationLog {
     private String protocolo;
 
     private Object response;
+
+    private IntegrationResult result;
 
     private Object error;
 
