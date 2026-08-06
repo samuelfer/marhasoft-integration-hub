@@ -59,7 +59,7 @@ public class IntegrationContext<T, P> {
     }
 
     public LocalDate getExercicio() {
-        return configuration != null ? configuration.getExercicio() : null;
+        return configuration != null ? configuration.getCompetencia() : null;
     }
 
     public EnvironmentType getEnvironment() {

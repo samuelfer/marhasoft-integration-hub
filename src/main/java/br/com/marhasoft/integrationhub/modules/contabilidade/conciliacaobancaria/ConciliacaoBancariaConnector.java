@@ -20,8 +20,6 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ConciliacaoBancariaConnector implements IntegrationConnector<ConciliacaoBancariaBatchRequest, ConciliacaoBancariaPayload> {
 
-    private final IntegrationExecutor executor;
-
     private static final ConnectorMetadata METADATA =
             new ConnectorMetadata(
                     IntegrationModule.FROTAS,

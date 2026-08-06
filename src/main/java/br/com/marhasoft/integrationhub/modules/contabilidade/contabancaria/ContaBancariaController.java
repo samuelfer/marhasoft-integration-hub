@@ -51,7 +51,7 @@ public class ContaBancariaController {
     @PostMapping
     public ResponseEntity<IntegrationResult> create(
             @RequestHeader("X-IntegrationHub-Key") String integrationKey,
-            @RequestHeader("X-Exercise") LocalDate exercicio,
+            @RequestHeader("X-Exercise") LocalDate competencia,
             @Valid @RequestBody ContaBancariaBatchRequest request) {
 
         validateIntegrationKey(integrationKey);
@@ -67,7 +67,7 @@ public class ContaBancariaController {
                 IntegrationConfiguration.builder()
                         .organization(temporaryOrganization())
                         .environment(EnvironmentType.HOMOLOGATION)
-                        .exercicio(exercicio)
+                        .competencia(competencia)
                         .build();
 
 //        IntegrationResult result =
