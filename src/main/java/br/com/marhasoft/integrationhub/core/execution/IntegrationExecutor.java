@@ -4,6 +4,7 @@ import br.com.marhasoft.integrationhub.core.authentication.IntegrationClient;
 import br.com.marhasoft.integrationhub.core.configuration.IntegrationConfiguration;
 import br.com.marhasoft.integrationhub.core.connector.IntegrationConnector;
 import br.com.marhasoft.integrationhub.core.result.IntegrationResult;
+import br.com.marhasoft.integrationhub.core.sagres.model.SagresEnvio;
 
 /**
  * Define o contrato responsável por executar uma integração.
@@ -54,5 +55,12 @@ public interface IntegrationExecutor {
             T request,
             IntegrationConfiguration configuration,
             IntegrationClient integrationClient);
+
+    <T, P> IntegrationResult executeParaProtocolo(
+            IntegrationConnector<T, P> connector,
+            T request,
+            IntegrationConfiguration configuration,
+            IntegrationClient integrationClient,
+            SagresEnvio envio);
 
 }

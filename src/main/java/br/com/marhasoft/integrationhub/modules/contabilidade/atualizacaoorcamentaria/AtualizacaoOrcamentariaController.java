@@ -40,7 +40,7 @@ import java.time.LocalDate;
  * pelo Integration Hub.
  */
 @RestController
-@RequestMapping("/api/v1/contabilidade/atualizao-orcamentaria")
+@RequestMapping("/api/v1/contabilidade/atualizacao-orcamentaria")
 @RequiredArgsConstructor
 public class AtualizacaoOrcamentariaController extends AbstractIntegrationController {
 

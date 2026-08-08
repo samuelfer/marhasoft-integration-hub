@@ -79,40 +79,87 @@ public class ReceitaOrcamentariaConnector implements IntegrationConnector<Receit
      */
     @Override
     public void send(IntegrationContext<ReceitaOrcamentariaBatchRequest, ReceitaOrcamentariaPayload> context) {
-
         /*
          * Etapa 1
          * Solicita ao SAGRES a abertura de um protocolo de envio.
+         * caso não exista
          */
-        SagresEnvioResult envioResult = envioClient.criarEnvio(context, SagresTipoEnvio.ORCAMENTO);
+        if (!abrirProtocolo(context)) {
+            return;
+        }
+
+        enviarEntidades(context);
+
+        if (!context.getResult().hasErrors()) {
+            consolidarProtocolo(context);
+        }
+    }
+
+    /**
+     * Envia as entidades para um protocolo já existente.
+     *
+     * <p>Este fluxo é utilizado quando o protocolo já foi criado
+     * anteriormente, permitindo retomar uma integração interrompida
+     * sem a necessidade de abrir um novo protocolo.</p>
+     */
+    public void enviarParaProtocoloExistente(
+            IntegrationContext<ReceitaOrcamentariaBatchRequest,
+                    ReceitaOrcamentariaPayload> context) {
+
+        enviarEntidades(context);
+
+        if (!context.getResult().hasErrors()) {
+            consolidarProtocolo(context);
+        }
+    }
+
+    /**
+     * Abre um novo protocolo de envio no SAGRES.
+     *
+     * @return {@code true} caso o protocolo tenha sido criado com sucesso;
+     *         {@code false} caso tenha ocorrido algum erro.
+     */
+    private boolean abrirProtocolo(
+            IntegrationContext<ReceitaOrcamentariaBatchRequest,
+                    ReceitaOrcamentariaPayload> context) {
+
+        SagresEnvioResult envioResult = envioClient.criarEnvio(
+                        context, SagresTipoEnvio.ORCAMENTO);
 
         context.getResult().merge(envioResult.getResult());
 
         if (context.getResult().hasErrors()) {
-            return;
+            return false;
         }
 
         context.setEnvio(envioResult.getEnvio());
 
-        /*
-         * Etapa 2
-         * Envia a entidade Receita Orçamentária utilizando o protocolo
-         * criado anteriormente.
-         */
-        IntegrationResult result = client.cadastrarReceitaOrcamentaria(context,
-                context.getMappedPayload());
+        return true;
+    }
+
+    /**
+     * Envia as entidades da Receita Orçamentária para o protocolo
+     * informado no contexto da integração.
+     */
+    private void enviarEntidades(
+            IntegrationContext<ReceitaOrcamentariaBatchRequest,
+                    ReceitaOrcamentariaPayload> context) {
+
+        IntegrationResult result = client.cadastrarReceitaOrcamentaria(
+                        context, context.getMappedPayload());
 
         context.getResult().merge(result);
+    }
 
-        if (!context.getResult().hasErrors()) {
+    /**
+     * Solicita ao SAGRES a consolidação do protocolo para que
+     * as entidades enviadas sejam processadas.
+     */
+    private void consolidarProtocolo(
+            IntegrationContext<ReceitaOrcamentariaBatchRequest,
+                    ReceitaOrcamentariaPayload> context) {
 
-            /*
-             * Etapa 3
-             * Solicita ao SAGRES a consolidação do protocolo para que
-             * os dados enviados sejam processados e validados.
-             */
-            context.setEnvio(envioClient.consolidar(context, context.getEnvio()));
-        }
+        context.setEnvio(envioClient.consolidar(context, context.getEnvio()));
     }
 
     /**
